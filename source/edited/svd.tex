@@ -1,0 +1,386 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ mathrsfs }
+\usepackage{amsfonts}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\title{Informal Notes on SVD of a matrix}
+\author{Harsha Vardhan Tetali}
+\begin{document}
+\maketitle
+\author
+
+\section{Introduction}
+
+In these notes, we construct bases for the column and row spaces of a matrix $A \in \mathbb{R}^{m \times n}$. To do so, we first construct positive semidefinite matrices whose row or column spaces coincide with those of $A$. Positive semidefinite matrices are symmetric, so their orthonormal eigenvectors can provide bases for the spaces of interest.
+
+\section{Examining the Fundamental Spaces}
+
+\subsection{Null Spaces}
+We begin with the null space of $A$.
+Let $\boldsymbol{x} \in \operatorname{null}(A)$.
+
+Therefore,
+\begin{equation}
+A \boldsymbol{x} = \boldsymbol{0}_m
+\end{equation}
+
+where $\boldsymbol{0}_m \in \mathbb{R}^{m}$ is the zero vector in the $m$ dimensional space.
+
+Multiplying $A^{\top}$ on both sides,
+
+\begin{equation}
+A^{\top} A \boldsymbol{x} = \boldsymbol{0}_n
+\label{eq:ata}
+\end{equation}
+
+where $\boldsymbol{0}_n \in \mathbb{R}^{n}$ is the zero vector in the $n$ dimensional space.
+
+Equation \ref{eq:ata} implies that $\boldsymbol{x} \in \operatorname{null}(A^{\top}A)$.
+
+Thus,
+
+\begin{equation}
+\operatorname{null}(A) \subseteq \operatorname{null}(A^{\top}A)
+\label{eq:res1}
+\end{equation}
+
+Now suppose $\boldsymbol{y} \in \operatorname{null}(A^{\top}A)$.
+
+Thus,
+
+\begin{equation}
+A^{\top}A \boldsymbol{y} = \boldsymbol{0}_n 
+\end{equation}
+
+Premultiplying both sides by $\boldsymbol{y}^{\top}$ we have,
+
+\begin{equation}
+\boldsymbol{y}^{\top}A^{\top}A \boldsymbol{y} = 0
+\end{equation}
+
+This can be written as,
+
+\begin{equation}
+\left(A\boldsymbol{y}\right)^{\top}A \boldsymbol{y} = 0
+\end{equation}
+
+Recognizing the squared Euclidean norm, we obtain
+
+\begin{equation}
+\| A \boldsymbol{y} \|_{2}^{2} = 0
+\end{equation}
+
+Thus, \begin{equation}
+A \boldsymbol{y} = \boldsymbol{0}_m
+\end{equation}
+
+This implies, \begin{equation}
+\boldsymbol{y} \in \operatorname{null}(A)
+\end{equation}
+
+Thus, 
+\begin{equation}
+\operatorname{null}(A^{\top}A) \subseteq \operatorname{null}(A)
+\label{eq:res2}
+\end{equation}
+
+From \ref{eq:res1} and \ref{eq:res2} we have,
+
+\begin{equation}
+\operatorname{null}(A^{\top}A) = \operatorname{null}(A)
+\end{equation}
+
+Repeating the argument with $A^{\top}$ we have,
+
+\begin{equation}
+\operatorname{null}(AA^{\top}) = \operatorname{null}(A^{\top})
+\label{eq:AAt}
+\end{equation}
+
+Thus, the null space of $A^{\top}A$ is the same as the null space of $A$ and the null space of $AA^{\top}$ is the same as the null space of $A^{\top}$.
+
+\subsection{Row and Column Spaces}
+
+We know that the row space of $A$ is orthogonal to the null space of $A$ and from the relation between rank and nullity of a matrix, we can say that all spaces orthogonal to the row space is the null space. We therefore write this as,
+
+\begin{equation}
+R(A) = \left[\operatorname{null}(A)\right]^{\perp}
+\label{eq:usu}
+\end{equation}
+
+where $R(A)$ denotes the row space of $A$.
+
+Also,
+
+\begin{equation}
+R(A^{\top}) = \left[\operatorname{null}(A^{\top})\right]^{\perp}
+\end{equation}
+
+This can be written as,
+
+\begin{equation}
+C(A) = \left[\operatorname{null}(A^{\top})\right]^{\perp}
+\end{equation}
+
+where $C(A)$ denotes the column space of $A$.
+
+Combining the last equation with \ref{eq:AAt}, we have,
+
+\begin{equation}
+C(A) = \left[\operatorname{null}(AA^{\top})\right]^{\perp}\label{eq:mine}
+\end{equation}
+
+But we know from \ref{eq:usu}, by putting $AA^{\top}$ instead of $A$, that,
+
+\begin{equation}
+R(AA^{\top}) = \left[\operatorname{null}(AA^{\top})\right]^{\perp}
+\end{equation}
+
+Since, $R(AA^{\top})=C(AA^{\top})$, we can write the above as,
+
+\begin{equation}
+C(AA^{\top}) = \left[\operatorname{null}(AA^{\top})\right]^{\perp}
+\label{eq:yours}
+\end{equation}
+
+From \ref{eq:mine} and \ref{eq:yours} we have,
+
+\begin{equation}
+C(AA^{\top}) = C(A)
+\end{equation}
+
+Now replacing $A^{\top}$ instead of $A$, we have,
+
+\begin{equation}
+C(A^{\top}A) = C(A^{\top})
+\end{equation}
+
+As seen from the row space point of view, we have,
+
+\begin{equation}
+R(A^{\top}A) = R(A)
+\end{equation}
+
+Thus, $A$ and $AA^{\top}$ have the same column space. Similarly, $A$ and $A^{\top}A$ have the same row space.
+
+\subsection{Basis for the Fundamental Spaces}
+
+Let us look at the matrix $A \in \mathbb{R}^{m \times n}$ as a linear transformation of vectors from $\mathbb{R}^n$ to $\mathbb{R}^m$. Let us consider $m<n$. Thus we write,
+
+$A: \mathbb{R}^n \rightarrow \mathbb{R}^m$
+
+The domain is the $n$-dimensional vector space $\mathbb{R}^n$ and the codomain is the $m$-dimensional vector space $\mathbb{R}^m$.
+
+Similarly, the linear transformation, $A^{\top}: \mathbb{R}^m \rightarrow \mathbb{R}^n$ has the domain set as the m-dimensional vector space $\mathbb{R}^m$ and the co-domain set as the n-dimensional vector space $\mathbb{R}^n$.
+
+Now observe that the spaces $C(A)$ and $\operatorname{null}(A^{\top})$ form the entire space $\mathbb{R}^m$. Thus, $C(AA^{\top})$ and $\operatorname{null}(AA^{\top})$ combined together form the entire space $\mathbb{R}^m$.
+
+An orthonormal basis for $C(A)$ can be constructed from eigenvectors of the symmetric matrix $AA^{\top}$ associated with its positive eigenvalues. Let this orthonormal basis be $\{ \boldsymbol{u}_1, \boldsymbol{u}_2, \cdots, \boldsymbol{u}_r \}$. 
+
+Now each $\boldsymbol{u}_i \in \mathbb{R}^m$, so let us see what happens to the basis under the transformation $A^{\top}$.
+
+The new set, after transformation, is therefore, $\{ A^{\top}\boldsymbol{u}_1, A^{\top}\boldsymbol{u}_2, \cdots, A^{\top}\boldsymbol{u}_r \}$.
+
+For any $i$, $j$ we have,
+
+\begin{equation}
+\left(A^{\top}\boldsymbol{u}_i \right)^{\top} A^{\top}\boldsymbol{u}_j = \boldsymbol{u}_i^{\top}AA^{\top}\boldsymbol{u}_j 
+\label{eq:me}
+\end{equation}
+
+
+Since each $\boldsymbol{u}_i$ is an eigenvector of $AA^{\top}$, we have
+
+\begin{equation}
+AA^{\top}\boldsymbol{u}_i = \lambda_i \boldsymbol{u}_i 
+\label{eq:you}
+\end{equation}
+
+Therefore, from \ref{eq:me} and \ref{eq:you}, we have,
+
+\begin{equation}
+\boldsymbol{u}_i^{\top}AA^{\top}\boldsymbol{u}_j  = \boldsymbol{u}_i^{\top} \left( \lambda_j \boldsymbol{u}_j \right) = \lambda_j \boldsymbol{u}_i^{\top} \boldsymbol{u}_j = \begin{cases}
+\lambda_i, \text{ where } i = j \\
+0, \text{ where } i \neq j\\
+\end{cases}
+\label{eq:cas}
+\end{equation}
+
+Therefore, $\{ A^{\top}\boldsymbol{u}_1, A^{\top}\boldsymbol{u}_2, \cdots, A^{\top}\boldsymbol{u}_r \}$ is an orthogonal set.
+
+Let $A^{\top}\boldsymbol{u}_i = \boldsymbol{w}_i$. From \ref{eq:cas} it is clear that, 
+\begin{equation}
+\boldsymbol{w}_i^{\top} \boldsymbol{w}_i = \lambda_i
+\end{equation}
+
+Let us define \begin{equation}
+\boldsymbol{v}_i = \frac{\boldsymbol{w}_i}{\sqrt{\lambda_{i}} }
+\end{equation} to normalize each $\boldsymbol{w}_i$ for all $i=1,2,\cdots,r$.
+
+We therefore have,
+
+\begin{equation}
+A^{\top} \boldsymbol{u}_i = \sqrt{\lambda_{i}} \boldsymbol{v}_i
+\end{equation}
+
+Multiplying $A$ on both sides, we have,
+\begin{equation}
+AA^{\top} \boldsymbol{u}_i = \sqrt{\lambda_{i}} A\boldsymbol{v}_i
+\end{equation}
+
+From \ref{eq:you} and the above equation,
+
+\begin{equation}
+\lambda_i \boldsymbol{u}_i = \sqrt{\lambda_{i}} A\boldsymbol{v}_i
+\end{equation}
+
+Thus, we have,
+
+\begin{equation}
+A\boldsymbol{v}_i = \sqrt{\lambda_{i}}\boldsymbol{u}_i
+\label{eq:sing}
+\end{equation}
+
+for all $i=1,2,\cdots,r$
+
+We know that $\boldsymbol{v}_i \in \mathbb{R}^{n}$, therefore, we can add the remaining few vectors to the set $\{ \boldsymbol{v}_1, \boldsymbol{v}_2, \cdots, \boldsymbol{v}_r \}$, which is already an orthogonal set and therefore linearly independent, to create a basis for $\mathbb{R}^n$. Since, \begin{equation*}
+\boldsymbol{v}_i = \frac{A^{\top}\boldsymbol{u}_i}{\sqrt{\lambda_i}}
+\end{equation*}
+
+We know that $\boldsymbol{v}_i$'s come from the column space of $A^{\top}$ and we also know that they form the basis of the column space because they are linearly independent. Now we therefore consider orthonormal vectors that form the basis of null space of $A$. These can be obtained as the null space of $A^{\top}A$. These will be $n-r$ vectors, say, $\{ \boldsymbol{\eta}_1, \boldsymbol{\eta}_2, \cdots, \boldsymbol{\eta}_{n-r} \}$.
+
+Therefore, \begin{equation}
+A \boldsymbol{\eta}_j = \boldsymbol{0}
+\label{eq:null}
+\end{equation}
+
+for all $j=1,2,\cdots,n-r$.
+
+Putting vectors from \ref{eq:sing} and \ref{eq:null} as the column vectors of a matrix we have the following equality,
+
+\begin{equation}
+\begin{bmatrix}
+A \boldsymbol{v}_1 & A \boldsymbol{v}_2 & \cdots & A \boldsymbol{v}_r & A \boldsymbol{\eta}_1 & A \boldsymbol{\eta}_2 & \cdots &A \boldsymbol{\eta}_{n-r}
+\end{bmatrix} = \begin{bmatrix}
+\sqrt{\lambda_{1}}\boldsymbol{u}_1 & \sqrt{\lambda_{2}}\boldsymbol{u}_2 &
+\cdots \sqrt{\lambda_{r}}\boldsymbol{u}_r & \boldsymbol{0} & \boldsymbol{0} & \cdots & \boldsymbol{0}
+\end{bmatrix}
+\end{equation}
+
+We can write the above as,
+
+\begin{equation}
+\begin{aligned}
+A \begin{bmatrix}
+\boldsymbol{v}_1 & \boldsymbol{v}_2 & \cdots & \boldsymbol{v}_r &  \boldsymbol{\eta}_1 & \boldsymbol{\eta}_2 & \cdots & \boldsymbol{\eta}_{n-r}
+\end{bmatrix} = \\ \begin{bmatrix}
+\boldsymbol{u}_1 & \boldsymbol{u}_2 & \cdots & \boldsymbol{u}_r
+\end{bmatrix} \begin{bmatrix}
+\sqrt{\lambda_1} & 0 & \cdots &0 & 0 & 0 & \cdots & 0 \\
+0 & \sqrt{\lambda_2} & \cdots & 0 & 0 & 0 & \cdots & 0\\
+\vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots &\sqrt{\lambda}_r & 0 & 0 & \cdots & 0 \\
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+
+For similar reasons, we can extend $\{
+\boldsymbol{u}_1, \boldsymbol{u}_2, \cdots, \boldsymbol{u}_r
+\}$ to form basis for $\mathbb{R}^m$. This can be done by adding the $m-r$ vectors that form the basis for the null space of $A^{\top}$. Let these be represented by $\{ \boldsymbol{\nu}_1, \boldsymbol{\nu}_2, \cdots, \boldsymbol{\nu}_{m-r} \}$. These can be obtained as the null space of $AA^{\top}$.
+
+We can append these vectors in the matrix of the above equation:
+
+\begin{equation}
+\begin{aligned}
+A \begin{bmatrix}
+\boldsymbol{v}_1 & \boldsymbol{v}_2 & \cdots & \boldsymbol{v}_r &  \boldsymbol{\eta}_1 & \boldsymbol{\eta}_2 & \cdots & \boldsymbol{\eta}_{n-r}
+\end{bmatrix} = \\
+\begin{bmatrix}
+\boldsymbol{u}_1 & \boldsymbol{u}_2 & \cdots & \boldsymbol{u}_r & \boldsymbol{\nu}_1 & \cdots & \boldsymbol{\nu}_{m-r}
+\end{bmatrix} \begin{bmatrix}
+\sqrt{\lambda_1} & 0 & \cdots &0 & 0 & 0 & \cdots & 0 \\
+0 & \sqrt{\lambda_2} & \cdots & 0 & 0 & 0 & \cdots & 0\\
+\vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \sqrt{\lambda_r} & 0 & 0 & \cdots & 0 \\
+0 & 0 & \cdots & 0 & 0 & 0 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & 0 & 0 & 0 & \cdots & 0 \\
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+
+Let us denote,
+
+\begin{equation}
+V = \begin{bmatrix}
+\boldsymbol{v}_1 & \boldsymbol{v}_2 & \cdots & \boldsymbol{v}_r &  \boldsymbol{\eta}_1 & \boldsymbol{\eta}_2 & \cdots & \boldsymbol{\eta}_{n-r}
+\end{bmatrix} 
+\end{equation}
+
+And then denote,
+
+\begin{equation}
+U = \begin{bmatrix}
+\boldsymbol{u}_1 & \boldsymbol{u}_2 & \cdots & \boldsymbol{u}_r & \boldsymbol{\nu}_1 & \cdots & \boldsymbol{\nu}_{m-r}
+\end{bmatrix}
+\end{equation}
+
+Observe that, $\{ \boldsymbol{\eta}_1, \boldsymbol{\eta}_2, \cdots, \boldsymbol{\eta}_{n-r} \}$ can be chosen, using the Gram–Schmidt process, such that $V$ is an orthogonal matrix. Similarly, $U$ can also be chosen to be an orthogonal matrix. Therefore, we have,
+
+\begin{equation}
+U^{\top}U = \boldsymbol{I}_m
+\end{equation}
+and,
+\begin{equation}
+V^{\top}V = \boldsymbol{I}_n
+\end{equation}
+
+Let us also denote,
+
+\begin{equation}
+\Sigma = \begin{bmatrix}
+\sqrt{\lambda_1} & 0 & \cdots &0 & 0 & 0 & \cdots & 0 \\
+0 & \sqrt{\lambda_2} & \cdots & 0 & 0 & 0 & \cdots & 0\\
+\vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \sqrt{\lambda_r} & 0 & 0 & \cdots & 0 \\
+0 & 0 & \cdots & 0 & 0 & 0 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & 0 & 0 & 0 & \cdots & 0 \\
+\end{bmatrix}
+\end{equation}
+
+Therefore, we can write,
+
+\begin{equation}
+AV = U\Sigma 
+\end{equation}
+
+Thus,
+\begin{equation}
+A = U\Sigma V^{\top} 
+\end{equation}
+
+where $\Sigma \in \mathbb{R}^{m \times n}$ contains the singular values of $A$, $U \in \mathbb{R}^{m \times m}$ and $V \in \mathbb{R}^{n \times n}$. 
+
+
+
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#f6f4ef"/>
+<title>Singular Value Decomposition | Linear Algebra Notes · Harsha Vardhan Tetali</title>
+<meta name="description" content="Null spaces, Gram matrices, eigenvectors, and a constructive SVD"/>
+<meta property="og:title" content="Singular Value Decomposition | Informal Linear Algebra Notes"/>
+<meta property="og:description" content="Null spaces, Gram matrices, eigenvectors, and a constructive SVD"/>
+<meta property="og:type" content="website"/>
+<link rel="canonical" href="https://mathyharsha.github.io/linear-algebra/chapters/svd.html"/>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet"/>
+<script>try{if(localStorage.getItem('matrix-notes-theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>
+<link rel="stylesheet" href="../assets/styles.css"/>
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},startup:{typeset:true}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script defer src="../assets/search-index.js"></script>
+<script defer src="../assets/app.js"></script>
+</head><body data-chapter="svd">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header"><div class="site-nav"><a class="site-brand" href="../index.html"><span class="brand-mark">H<span>·</span></span><span class="brand-name">Harsha's <em>notes</em></span></a>
+<nav class="desktop-nav" aria-label="Chapters"><a href="../index.html#chapters" class="nav-link">Chapters</a><a class="nav-link " href="../chapters/spaces.html">01 · Spaces of a Matrix</a><a class="nav-link " href="../chapters/rank.html">02 · Rank of a Matrix</a><a class="nav-link is-current" href="../chapters/svd.html">03 · Singular Value Decomposition</a></nav>
+<div class="nav-actions"><button class="icon-button" type="button" id="search-button" aria-label="Search notes" title="Search notes (/)" data-icon="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.6"/><path d="M16 16l5 5"/></svg><span class="search-hint">Search</span><kbd>/</kbd></button>
+<button class="icon-button theme-toggle" type="button" id="theme-button" aria-label="Toggle light or dark theme" title="Toggle theme"><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.4A8.5 8.5 0 0 1 9.6 3.5a8.5 8.5 0 1 0 10.9 10.9Z"/></svg></button>
+<button class="icon-button mobile-menu-button" type="button" id="menu-button" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div></div>
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile chapters"><a class="nav-link " href="../chapters/spaces.html">01 · Spaces of a Matrix</a><a class="nav-link " href="../chapters/rank.html">02 · Rank of a Matrix</a><a class="nav-link is-current" href="../chapters/svd.html">03 · Singular Value Decomposition</a><a href="../index.html">All chapters</a></nav>
+</header>
+<div class="reading-progress" id="reading-progress"></div>
+<div class="page-wrap"><div class="breadcrumb"><a href="../index.html">Notes</a><span>/</span><a href="../index.html#chapters">Linear algebra</a><span>/</span><strong>Singular Value Decomposition</strong></div>
+<section class="chapter-header">
+<span class="eyebrow">03 · Decomposition <span class="eyebrow-dot">·</span> Informal linear algebra notes</span>
+<h1>Singular Value Decomposition</h1><p class="chapter-lead">Null spaces, Gram matrices, eigenvectors, and a constructive SVD</p>
+<div class="chapter-meta"><span><span class="meta-swatch"></span> Written by Harsha Vardhan Tetali</span><span>42 numbered equations</span><a href="../source/edited/svd.tex" download>View LaTeX source ↗</a></div>
+</section>
+<div class="chapter-layout"><aside class="chapter-sidebar" id="chapter-sidebar"><div class="sidebar-top"><span>ON THIS PAGE</span><button type="button" id="toc-collapse" aria-expanded="true">Sections <span>⌄</span></button></div><nav class="toc-list" aria-label="Table of contents"><a class="toc-link " href="#introduction">Introduction</a>
+<a class="toc-link " href="#examining-the-fundamental-spaces">Examining the Fundamental Spaces</a>
+<a class="toc-link toc-sub" href="#null-spaces">Null Spaces</a>
+<a class="toc-link toc-sub" href="#row-and-column-spaces">Row and Column Spaces</a>
+<a class="toc-link toc-sub" href="#basis-for-the-fundamental-spaces">Basis for the Fundamental Spaces</a></nav><div class="sidebar-return"><a href="../index.html#chapters">← All chapters</a></div></aside>
+<main id="main-content" class="article"><div class="chapter-intro-callout"><span class="note-icon">✦</span><p><strong>The idea.</strong> Derive the singular value decomposition from the geometry of the fundamental spaces.</p></div><div class="article-body"><h2 id="introduction">Introduction<a aria-label="Link to this section" class="heading-anchor" href="#introduction">#</a></h2>
+<p>In these notes, we construct bases for the column and row spaces of a matrix <span class="math inline">\(A \in \mathbb{R}^{m \times n}\)</span>. To do so, we first construct positive semidefinite matrices whose row or column spaces coincide with those of <span class="math inline">\(A\)</span>. Positive semidefinite matrices are symmetric, so their orthonormal eigenvectors can provide bases for the spaces of interest.</p>
+<h2 id="examining-the-fundamental-spaces">Examining the Fundamental Spaces<a aria-label="Link to this section" class="heading-anchor" href="#examining-the-fundamental-spaces">#</a></h2>
+<h3 id="null-spaces">Null Spaces<a aria-label="Link to this section" class="heading-anchor" href="#null-spaces">#</a></h3>
+<p>We begin with the null space of <span class="math inline">\(A\)</span>. Let <span class="math inline">\(\boldsymbol{x} \in \operatorname{null}(A)\)</span>.</p>
+<p>Therefore, <span class="equation-block" id="eq-svd-1"><span class="equation-math">\[A \boldsymbol{x} = \boldsymbol{0}_m\]</span><a aria-label="Equation 03.1; copy link" class="eq-number" href="#eq-svd-1" title="Link to equation 03.1">(03.1)</a></span></p>
+<p>where <span class="math inline">\(\boldsymbol{0}_m \in \mathbb{R}^{m}\)</span> is the zero vector in the <span class="math inline">\(m\)</span> dimensional space.</p>
+<p>Multiplying <span class="math inline">\(A^{\top}\)</span> on both sides,</p>
+<p><span class="equation-block" id="eq-svd-2"><span class="equation-math">\[A^{\top} A \boldsymbol{x} = \boldsymbol{0}_n
+\]</span><a aria-label="Equation 03.2; copy link" class="eq-number" href="#eq-svd-2" title="Link to equation 03.2">(03.2)</a></span></p>
+<p>where <span class="math inline">\(\boldsymbol{0}_n \in \mathbb{R}^{n}\)</span> is the zero vector in the <span class="math inline">\(n\)</span> dimensional space.</p>
+<p>Equation <a class="eq-ref" data-reference="eq:ata" data-reference-type="ref" href="#eq-svd-2">03.2</a> implies that <span class="math inline">\(\boldsymbol{x} \in \operatorname{null}(A^{\top}A)\)</span>.</p>
+<p>Thus,</p>
+<p><span class="equation-block" id="eq-svd-3"><span class="equation-math">\[\operatorname{null}(A) \subseteq \operatorname{null}(A^{\top}A)
+\]</span><a aria-label="Equation 03.3; copy link" class="eq-number" href="#eq-svd-3" title="Link to equation 03.3">(03.3)</a></span></p>
+<p>Now suppose <span class="math inline">\(\boldsymbol{y} \in \operatorname{null}(A^{\top}A)\)</span>.</p>
+<p>Thus,</p>
+<p><span class="equation-block" id="eq-svd-4"><span class="equation-math">\[A^{\top}A \boldsymbol{y} = \boldsymbol{0}_n\]</span><a aria-label="Equation 03.4; copy link" class="eq-number" href="#eq-svd-4" title="Link to equation 03.4">(03.4)</a></span></p>
+<p>Premultiplying both sides by <span class="math inline">\(\boldsymbol{y}^{\top}\)</span> we have,</p>
+<p><span class="equation-block" id="eq-svd-5"><span class="equation-math">\[\boldsymbol{y}^{\top}A^{\top}A \boldsymbol{y} = 0\]</span><a aria-label="Equation 03.5; copy link" class="eq-number" href="#eq-svd-5" title="Link to equation 03.5">(03.5)</a></span></p>
+<p>This can be written as,</p>
+<p><span class="equation-block" id="eq-svd-6"><span class="equation-math">\[\left(A\boldsymbol{y}\right)^{\top}A \boldsymbol{y} = 0\]</span><a aria-label="Equation 03.6; copy link" class="eq-number" href="#eq-svd-6" title="Link to equation 03.6">(03.6)</a></span></p>
+<p>Recognizing the squared Euclidean norm, we obtain</p>
+<p><span class="equation-block" id="eq-svd-7"><span class="equation-math">\[\| A \boldsymbol{y} \|_{2}^{2} = 0\]</span><a aria-label="Equation 03.7; copy link" class="eq-number" href="#eq-svd-7" title="Link to equation 03.7">(03.7)</a></span></p>
+<p>Thus, <span class="equation-block" id="eq-svd-8"><span class="equation-math">\[A \boldsymbol{y} = \boldsymbol{0}_m\]</span><a aria-label="Equation 03.8; copy link" class="eq-number" href="#eq-svd-8" title="Link to equation 03.8">(03.8)</a></span></p>
+<p>This implies, <span class="equation-block" id="eq-svd-9"><span class="equation-math">\[\boldsymbol{y} \in \operatorname{null}(A)\]</span><a aria-label="Equation 03.9; copy link" class="eq-number" href="#eq-svd-9" title="Link to equation 03.9">(03.9)</a></span></p>
+<p>Thus, <span class="equation-block" id="eq-svd-10"><span class="equation-math">\[\operatorname{null}(A^{\top}A) \subseteq \operatorname{null}(A)
+\]</span><a aria-label="Equation 03.10; copy link" class="eq-number" href="#eq-svd-10" title="Link to equation 03.10">(03.10)</a></span></p>
+<p>From <a class="eq-ref" data-reference="eq:res1" data-reference-type="ref" href="#eq-svd-3">03.3</a> and <a class="eq-ref" data-reference="eq:res2" data-reference-type="ref" href="#eq-svd-10">03.10</a> we have,</p>
+<p><span class="equation-block" id="eq-svd-11"><span class="equation-math">\[\operatorname{null}(A^{\top}A) = \operatorname{null}(A)\]</span><a aria-label="Equation 03.11; copy link" class="eq-number" href="#eq-svd-11" title="Link to equation 03.11">(03.11)</a></span></p>
+<p>Repeating the argument with <span class="math inline">\(A^{\top}\)</span> we have,</p>
+<p><span class="equation-block" id="eq-svd-12"><span class="equation-math">\[\operatorname{null}(AA^{\top}) = \operatorname{null}(A^{\top})
+\]</span><a aria-label="Equation 03.12; copy link" class="eq-number" href="#eq-svd-12" title="Link to equation 03.12">(03.12)</a></span></p>
+<p>Thus, the null space of <span class="math inline">\(A^{\top}A\)</span> is the same as the null space of <span class="math inline">\(A\)</span> and the null space of <span class="math inline">\(AA^{\top}\)</span> is the same as the null space of <span class="math inline">\(A^{\top}\)</span>.</p>
+<h3 id="row-and-column-spaces">Row and Column Spaces<a aria-label="Link to this section" class="heading-anchor" href="#row-and-column-spaces">#</a></h3>
+<p>We know that the row space of <span class="math inline">\(A\)</span> is orthogonal to the null space of <span class="math inline">\(A\)</span> and from the relation between rank and nullity of a matrix, we can say that all spaces orthogonal to the row space is the null space. We therefore write this as,</p>
+<p><span class="equation-block" id="eq-svd-13"><span class="equation-math">\[R(A) = \left[\operatorname{null}(A)\right]^{\perp}
+\]</span><a aria-label="Equation 03.13; copy link" class="eq-number" href="#eq-svd-13" title="Link to equation 03.13">(03.13)</a></span></p>
+<p>where <span class="math inline">\(R(A)\)</span> denotes the row space of <span class="math inline">\(A\)</span>.</p>
+<p>Also,</p>
+<p><span class="equation-block" id="eq-svd-14"><span class="equation-math">\[R(A^{\top}) = \left[\operatorname{null}(A^{\top})\right]^{\perp}\]</span><a aria-label="Equation 03.14; copy link" class="eq-number" href="#eq-svd-14" title="Link to equation 03.14">(03.14)</a></span></p>
+<p>This can be written as,</p>
+<p><span class="equation-block" id="eq-svd-15"><span class="equation-math">\[C(A) = \left[\operatorname{null}(A^{\top})\right]^{\perp}\]</span><a aria-label="Equation 03.15; copy link" class="eq-number" href="#eq-svd-15" title="Link to equation 03.15">(03.15)</a></span></p>
+<p>where <span class="math inline">\(C(A)\)</span> denotes the column space of <span class="math inline">\(A\)</span>.</p>
+<p>Combining the last equation with <a class="eq-ref" data-reference="eq:AAt" data-reference-type="ref" href="#eq-svd-12">03.12</a>, we have,</p>
+<p><span class="equation-block" id="eq-svd-16"><span class="equation-math">\[C(A) = \left[\operatorname{null}(AA^{\top})\right]^{\perp}\]</span><a aria-label="Equation 03.16; copy link" class="eq-number" href="#eq-svd-16" title="Link to equation 03.16">(03.16)</a></span></p>
+<p>But we know from <a class="eq-ref" data-reference="eq:usu" data-reference-type="ref" href="#eq-svd-13">03.13</a>, by putting <span class="math inline">\(AA^{\top}\)</span> instead of <span class="math inline">\(A\)</span>, that,</p>
+<p><span class="equation-block" id="eq-svd-17"><span class="equation-math">\[R(AA^{\top}) = \left[\operatorname{null}(AA^{\top})\right]^{\perp}\]</span><a aria-label="Equation 03.17; copy link" class="eq-number" href="#eq-svd-17" title="Link to equation 03.17">(03.17)</a></span></p>
+<p>Since, <span class="math inline">\(R(AA^{\top})=C(AA^{\top})\)</span>, we can write the above as,</p>
+<p><span class="equation-block" id="eq-svd-18"><span class="equation-math">\[C(AA^{\top}) = \left[\operatorname{null}(AA^{\top})\right]^{\perp}
+\]</span><a aria-label="Equation 03.18; copy link" class="eq-number" href="#eq-svd-18" title="Link to equation 03.18">(03.18)</a></span></p>
+<p>From <a class="eq-ref" data-reference="eq:mine" data-reference-type="ref" href="#eq-svd-16">03.16</a> and <a class="eq-ref" data-reference="eq:yours" data-reference-type="ref" href="#eq-svd-18">03.18</a> we have,</p>
+<p><span class="equation-block" id="eq-svd-19"><span class="equation-math">\[C(AA^{\top}) = C(A)\]</span><a aria-label="Equation 03.19; copy link" class="eq-number" href="#eq-svd-19" title="Link to equation 03.19">(03.19)</a></span></p>
+<p>Now replacing <span class="math inline">\(A^{\top}\)</span> instead of <span class="math inline">\(A\)</span>, we have,</p>
+<p><span class="equation-block" id="eq-svd-20"><span class="equation-math">\[C(A^{\top}A) = C(A^{\top})\]</span><a aria-label="Equation 03.20; copy link" class="eq-number" href="#eq-svd-20" title="Link to equation 03.20">(03.20)</a></span></p>
+<p>As seen from the row space point of view, we have,</p>
+<p><span class="equation-block" id="eq-svd-21"><span class="equation-math">\[R(A^{\top}A) = R(A)\]</span><a aria-label="Equation 03.21; copy link" class="eq-number" href="#eq-svd-21" title="Link to equation 03.21">(03.21)</a></span></p>
+<p>Thus, <span class="math inline">\(A\)</span> and <span class="math inline">\(AA^{\top}\)</span> have the same column space. Similarly, <span class="math inline">\(A\)</span> and <span class="math inline">\(A^{\top}A\)</span> have the same row space.</p>
+<h3 id="basis-for-the-fundamental-spaces">Basis for the Fundamental Spaces<a aria-label="Link to this section" class="heading-anchor" href="#basis-for-the-fundamental-spaces">#</a></h3>
+<p>Let us look at the matrix <span class="math inline">\(A \in \mathbb{R}^{m \times n}\)</span> as a linear transformation of vectors from <span class="math inline">\(\mathbb{R}^n\)</span> to <span class="math inline">\(\mathbb{R}^m\)</span>. Let us consider <span class="math inline">\(m&lt;n\)</span>. Thus we write,</p>
+<p><span class="math inline">\(A: \mathbb{R}^n \rightarrow \mathbb{R}^m\)</span></p>
+<p>The domain is the <span class="math inline">\(n\)</span>-dimensional vector space <span class="math inline">\(\mathbb{R}^n\)</span> and the codomain is the <span class="math inline">\(m\)</span>-dimensional vector space <span class="math inline">\(\mathbb{R}^m\)</span>.</p>
+<p>Similarly, the linear transformation, <span class="math inline">\(A^{\top}: \mathbb{R}^m \rightarrow \mathbb{R}^n\)</span> has the domain set as the m-dimensional vector space <span class="math inline">\(\mathbb{R}^m\)</span> and the co-domain set as the n-dimensional vector space <span class="math inline">\(\mathbb{R}^n\)</span>.</p>
+<p>Now observe that the spaces <span class="math inline">\(C(A)\)</span> and <span class="math inline">\(\operatorname{null}(A^{\top})\)</span> form the entire space <span class="math inline">\(\mathbb{R}^m\)</span>. Thus, <span class="math inline">\(C(AA^{\top})\)</span> and <span class="math inline">\(\operatorname{null}(AA^{\top})\)</span> combined together form the entire space <span class="math inline">\(\mathbb{R}^m\)</span>.</p>
+<p>An orthonormal basis for <span class="math inline">\(C(A)\)</span> can be constructed from eigenvectors of the symmetric matrix <span class="math inline">\(AA^{\top}\)</span> associated with its positive eigenvalues. Let this orthonormal basis be <span class="math inline">\(\{ \boldsymbol{u}_1, \boldsymbol{u}_2, \cdots, \boldsymbol{u}_r \}\)</span>.</p>
+<p>Now each <span class="math inline">\(\boldsymbol{u}_i \in \mathbb{R}^m\)</span>, so let us see what happens to the basis under the transformation <span class="math inline">\(A^{\top}\)</span>.</p>
+<p>The new set, after transformation, is therefore, <span class="math inline">\(\{ A^{\top}\boldsymbol{u}_1, A^{\top}\boldsymbol{u}_2, \cdots, A^{\top}\boldsymbol{u}_r \}\)</span>.</p>
+<p>For any <span class="math inline">\(i\)</span>, <span class="math inline">\(j\)</span> we have,</p>
+<p><span class="equation-block" id="eq-svd-22"><span class="equation-math">\[\left(A^{\top}\boldsymbol{u}_i \right)^{\top} A^{\top}\boldsymbol{u}_j = \boldsymbol{u}_i^{\top}AA^{\top}\boldsymbol{u}_j 
+\]</span><a aria-label="Equation 03.22; copy link" class="eq-number" href="#eq-svd-22" title="Link to equation 03.22">(03.22)</a></span></p>
+<p>Since each <span class="math inline">\(\boldsymbol{u}_i\)</span> is an eigenvector of <span class="math inline">\(AA^{\top}\)</span>, we have</p>
+<p><span class="equation-block" id="eq-svd-23"><span class="equation-math">\[AA^{\top}\boldsymbol{u}_i = \lambda_i \boldsymbol{u}_i 
+\]</span><a aria-label="Equation 03.23; copy link" class="eq-number" href="#eq-svd-23" title="Link to equation 03.23">(03.23)</a></span></p>
+<p>Therefore, from <a class="eq-ref" data-reference="eq:me" data-reference-type="ref" href="#eq-svd-22">03.22</a> and <a class="eq-ref" data-reference="eq:you" data-reference-type="ref" href="#eq-svd-23">03.23</a>, we have,</p>
+<p><span class="equation-block" id="eq-svd-24"><span class="equation-math">\[\boldsymbol{u}_i^{\top}AA^{\top}\boldsymbol{u}_j  = \boldsymbol{u}_i^{\top} \left( \lambda_j \boldsymbol{u}_j \right) = \lambda_j \boldsymbol{u}_i^{\top} \boldsymbol{u}_j = \begin{cases}
+\lambda_i, \text{ where } i = j \\
+0, \text{ where } i \neq j\\
+\end{cases}
+\]</span><a aria-label="Equation 03.24; copy link" class="eq-number" href="#eq-svd-24" title="Link to equation 03.24">(03.24)</a></span></p>
+<p>Therefore, <span class="math inline">\(\{ A^{\top}\boldsymbol{u}_1, A^{\top}\boldsymbol{u}_2, \cdots, A^{\top}\boldsymbol{u}_r \}\)</span> is an orthogonal set.</p>
+<p>Let <span class="math inline">\(A^{\top}\boldsymbol{u}_i = \boldsymbol{w}_i\)</span>. From <a class="eq-ref" data-reference="eq:cas" data-reference-type="ref" href="#eq-svd-24">03.24</a> it is clear that, <span class="equation-block" id="eq-svd-25"><span class="equation-math">\[\boldsymbol{w}_i^{\top} \boldsymbol{w}_i = \lambda_i\]</span><a aria-label="Equation 03.25; copy link" class="eq-number" href="#eq-svd-25" title="Link to equation 03.25">(03.25)</a></span></p>
+<p>Let us define <span class="equation-block" id="eq-svd-26"><span class="equation-math">\[\boldsymbol{v}_i = \frac{\boldsymbol{w}_i}{\sqrt{\lambda_{i}} }\]</span><a aria-label="Equation 03.26; copy link" class="eq-number" href="#eq-svd-26" title="Link to equation 03.26">(03.26)</a></span> to normalize each <span class="math inline">\(\boldsymbol{w}_i\)</span> for all <span class="math inline">\(i=1,2,\cdots,r\)</span>.</p>
+<p>We therefore have,</p>
+<p><span class="equation-block" id="eq-svd-27"><span class="equation-math">\[A^{\top} \boldsymbol{u}_i = \sqrt{\lambda_{i}} \boldsymbol{v}_i\]</span><a aria-label="Equation 03.27; copy link" class="eq-number" href="#eq-svd-27" title="Link to equation 03.27">(03.27)</a></span></p>
+<p>Multiplying <span class="math inline">\(A\)</span> on both sides, we have, <span class="equation-block" id="eq-svd-28"><span class="equation-math">\[AA^{\top} \boldsymbol{u}_i = \sqrt{\lambda_{i}} A\boldsymbol{v}_i\]</span><a aria-label="Equation 03.28; copy link" class="eq-number" href="#eq-svd-28" title="Link to equation 03.28">(03.28)</a></span></p>
+<p>From <a class="eq-ref" data-reference="eq:you" data-reference-type="ref" href="#eq-svd-23">03.23</a> and the above equation,</p>
+<p><span class="equation-block" id="eq-svd-29"><span class="equation-math">\[\lambda_i \boldsymbol{u}_i = \sqrt{\lambda_{i}} A\boldsymbol{v}_i\]</span><a aria-label="Equation 03.29; copy link" class="eq-number" href="#eq-svd-29" title="Link to equation 03.29">(03.29)</a></span></p>
+<p>Thus, we have,</p>
+<p><span class="equation-block" id="eq-svd-30"><span class="equation-math">\[A\boldsymbol{v}_i = \sqrt{\lambda_{i}}\boldsymbol{u}_i
+\]</span><a aria-label="Equation 03.30; copy link" class="eq-number" href="#eq-svd-30" title="Link to equation 03.30">(03.30)</a></span></p>
+<p>for all <span class="math inline">\(i=1,2,\cdots,r\)</span></p>
+<p>We know that <span class="math inline">\(\boldsymbol{v}_i \in \mathbb{R}^{n}\)</span>, therefore, we can add the remaining few vectors to the set <span class="math inline">\(\{ \boldsymbol{v}_1, \boldsymbol{v}_2, \cdots, \boldsymbol{v}_r \}\)</span>, which is already an orthogonal set and therefore linearly independent, to create a basis for <span class="math inline">\(\mathbb{R}^n\)</span>. Since, <span class="equation-block" id="eq-svd-31"><span class="equation-math">\[\boldsymbol{v}_i = \frac{A^{\top}\boldsymbol{u}_i}{\sqrt{\lambda_i}}\]</span><a aria-label="Equation 03.31; copy link" class="eq-number" href="#eq-svd-31" title="Link to equation 03.31">(03.31)</a></span></p>
+<p>We know that <span class="math inline">\(\boldsymbol{v}_i\)</span>’s come from the column space of <span class="math inline">\(A^{\top}\)</span> and we also know that they form the basis of the column space because they are linearly independent. Now we therefore consider orthonormal vectors that form the basis of null space of <span class="math inline">\(A\)</span>. These can be obtained as the null space of <span class="math inline">\(A^{\top}A\)</span>. These will be <span class="math inline">\(n-r\)</span> vectors, say, <span class="math inline">\(\{ \boldsymbol{\eta}_1, \boldsymbol{\eta}_2, \cdots, \boldsymbol{\eta}_{n-r} \}\)</span>.</p>
+<p>Therefore, <span class="equation-block" id="eq-svd-32"><span class="equation-math">\[A \boldsymbol{\eta}_j = \boldsymbol{0}
+\]</span><a aria-label="Equation 03.32; copy link" class="eq-number" href="#eq-svd-32" title="Link to equation 03.32">(03.32)</a></span></p>
+<p>for all <span class="math inline">\(j=1,2,\cdots,n-r\)</span>.</p>
+<p>Putting vectors from <a class="eq-ref" data-reference="eq:sing" data-reference-type="ref" href="#eq-svd-30">03.30</a> and <a class="eq-ref" data-reference="eq:null" data-reference-type="ref" href="#eq-svd-32">03.32</a> as the column vectors of a matrix we have the following equality,</p>
+<p><span class="equation-block" id="eq-svd-33"><span class="equation-math">\[\begin{bmatrix}
+A \boldsymbol{v}_1 &amp; A \boldsymbol{v}_2 &amp; \cdots &amp; A \boldsymbol{v}_r &amp; A \boldsymbol{\eta}_1 &amp; A \boldsymbol{\eta}_2 &amp; \cdots &amp;A \boldsymbol{\eta}_{n-r}
+\end{bmatrix} = \begin{bmatrix}
+\sqrt{\lambda_{1}}\boldsymbol{u}_1 &amp; \sqrt{\lambda_{2}}\boldsymbol{u}_2 &amp;
+\cdots \sqrt{\lambda_{r}}\boldsymbol{u}_r &amp; \boldsymbol{0} &amp; \boldsymbol{0} &amp; \cdots &amp; \boldsymbol{0}
+\end{bmatrix}\]</span><a aria-label="Equation 03.33; copy link" class="eq-number" href="#eq-svd-33" title="Link to equation 03.33">(03.33)</a></span></p>
+<p>We can write the above as,</p>
+<p><span class="equation-block" id="eq-svd-34"><span class="equation-math">\[\begin{aligned}
+A \begin{bmatrix}
+\boldsymbol{v}_1 &amp; \boldsymbol{v}_2 &amp; \cdots &amp; \boldsymbol{v}_r &amp;  \boldsymbol{\eta}_1 &amp; \boldsymbol{\eta}_2 &amp; \cdots &amp; \boldsymbol{\eta}_{n-r}
+\end{bmatrix} = \\ \begin{bmatrix}
+\boldsymbol{u}_1 &amp; \boldsymbol{u}_2 &amp; \cdots &amp; \boldsymbol{u}_r
+\end{bmatrix} \begin{bmatrix}
+\sqrt{\lambda_1} &amp; 0 &amp; \cdots &amp;0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
+0 &amp; \sqrt{\lambda_2} &amp; \cdots &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \cdots &amp;\sqrt{\lambda}_r &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
+\end{bmatrix}
+\end{aligned}\]</span><a aria-label="Equation 03.34; copy link" class="eq-number" href="#eq-svd-34" title="Link to equation 03.34">(03.34)</a></span></p>
+<p>For similar reasons, we can extend <span class="math inline">\(\{
+\boldsymbol{u}_1, \boldsymbol{u}_2, \cdots, \boldsymbol{u}_r
+\}\)</span> to form basis for <span class="math inline">\(\mathbb{R}^m\)</span>. This can be done by adding the <span class="math inline">\(m-r\)</span> vectors that form the basis for the null space of <span class="math inline">\(A^{\top}\)</span>. Let these be represented by <span class="math inline">\(\{ \boldsymbol{\nu}_1, \boldsymbol{\nu}_2, \cdots, \boldsymbol{\nu}_{m-r} \}\)</span>. These can be obtained as the null space of <span class="math inline">\(AA^{\top}\)</span>.</p>
+<p>We can append these vectors in the matrix of the above equation:</p>
+<p><span class="equation-block" id="eq-svd-35"><span class="equation-math">\[\begin{aligned}
+A \begin{bmatrix}
+\boldsymbol{v}_1 &amp; \boldsymbol{v}_2 &amp; \cdots &amp; \boldsymbol{v}_r &amp;  \boldsymbol{\eta}_1 &amp; \boldsymbol{\eta}_2 &amp; \cdots &amp; \boldsymbol{\eta}_{n-r}
+\end{bmatrix} = \\
+\begin{bmatrix}
+\boldsymbol{u}_1 &amp; \boldsymbol{u}_2 &amp; \cdots &amp; \boldsymbol{u}_r &amp; \boldsymbol{\nu}_1 &amp; \cdots &amp; \boldsymbol{\nu}_{m-r}
+\end{bmatrix} \begin{bmatrix}
+\sqrt{\lambda_1} &amp; 0 &amp; \cdots &amp;0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
+0 &amp; \sqrt{\lambda_2} &amp; \cdots &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \cdots &amp; \sqrt{\lambda_r} &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
+0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
+\end{bmatrix}
+\end{aligned}\]</span><a aria-label="Equation 03.35; copy link" class="eq-number" href="#eq-svd-35" title="Link to equation 03.35">(03.35)</a></span></p>
+<p>Let us denote,</p>
+<p><span class="equation-block" id="eq-svd-36"><span class="equation-math">\[V = \begin{bmatrix}
+\boldsymbol{v}_1 &amp; \boldsymbol{v}_2 &amp; \cdots &amp; \boldsymbol{v}_r &amp;  \boldsymbol{\eta}_1 &amp; \boldsymbol{\eta}_2 &amp; \cdots &amp; \boldsymbol{\eta}_{n-r}
+\end{bmatrix}\]</span><a aria-label="Equation 03.36; copy link" class="eq-number" href="#eq-svd-36" title="Link to equation 03.36">(03.36)</a></span></p>
+<p>And then denote,</p>
+<p><span class="equation-block" id="eq-svd-37"><span class="equation-math">\[U = \begin{bmatrix}
+\boldsymbol{u}_1 &amp; \boldsymbol{u}_2 &amp; \cdots &amp; \boldsymbol{u}_r &amp; \boldsymbol{\nu}_1 &amp; \cdots &amp; \boldsymbol{\nu}_{m-r}
+\end{bmatrix}\]</span><a aria-label="Equation 03.37; copy link" class="eq-number" href="#eq-svd-37" title="Link to equation 03.37">(03.37)</a></span></p>
+<p>Observe that, <span class="math inline">\(\{ \boldsymbol{\eta}_1, \boldsymbol{\eta}_2, \cdots, \boldsymbol{\eta}_{n-r} \}\)</span> can be chosen, using the Gram–Schmidt process, such that <span class="math inline">\(V\)</span> is an orthogonal matrix. Similarly, <span class="math inline">\(U\)</span> can also be chosen to be an orthogonal matrix. Therefore, we have,</p>
+<p><span class="equation-block" id="eq-svd-38"><span class="equation-math">\[U^{\top}U = \boldsymbol{I}_m\]</span><a aria-label="Equation 03.38; copy link" class="eq-number" href="#eq-svd-38" title="Link to equation 03.38">(03.38)</a></span> and, <span class="equation-block" id="eq-svd-39"><span class="equation-math">\[V^{\top}V = \boldsymbol{I}_n\]</span><a aria-label="Equation 03.39; copy link" class="eq-number" href="#eq-svd-39" title="Link to equation 03.39">(03.39)</a></span></p>
+<p>Let us also denote,</p>
+<p><span class="equation-block" id="eq-svd-40"><span class="equation-math">\[\Sigma = \begin{bmatrix}
+\sqrt{\lambda_1} &amp; 0 &amp; \cdots &amp;0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
+0 &amp; \sqrt{\lambda_2} &amp; \cdots &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \cdots &amp; \sqrt{\lambda_r} &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
+0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
+\end{bmatrix}\]</span><a aria-label="Equation 03.40; copy link" class="eq-number" href="#eq-svd-40" title="Link to equation 03.40">(03.40)</a></span></p>
+<p>Therefore, we can write,</p>
+<p><span class="equation-block" id="eq-svd-41"><span class="equation-math">\[AV = U\Sigma\]</span><a aria-label="Equation 03.41; copy link" class="eq-number" href="#eq-svd-41" title="Link to equation 03.41">(03.41)</a></span></p>
+<p>Thus, <span class="equation-block" id="eq-svd-42"><span class="equation-math">\[A = U\Sigma V^{\top}\]</span><a aria-label="Equation 03.42; copy link" class="eq-number" href="#eq-svd-42" title="Link to equation 03.42">(03.42)</a></span></p>
+<p>where <span class="math inline">\(\Sigma \in \mathbb{R}^{m \times n}\)</span> contains the singular values of <span class="math inline">\(A\)</span>, <span class="math inline">\(U \in \mathbb{R}^{m \times m}\)</span> and <span class="math inline">\(V \in \mathbb{R}^{n \times n}\)</span>.</p>
+</div>
+<div class="chapter-ending"><span>CHAPTER 03 OF 03</span><p>Continue reading</p><div class="chapter-pager"><a class="chapter-step previous" href="rank.html"><span>← Previous chapter</span><strong>Rank of a Matrix</strong></a><a class="chapter-step next" href="../index.html"><span>Back to overview →</span><strong>All chapters</strong></a></div></div>
+</main></div></div>
+<footer class="site-footer"><div class="footer-inner"><div><span class="footer-logo">H<span>·</span></span><strong>Informal Linear Algebra Notes</strong><p>Working through matrix theory, one idea at a time.</p></div><div class="footer-links"><a href="../index.html">Overview</a><a href="https://mathyharsha.github.io/" target="_blank" rel="noopener">Academic website ↗</a><a href="../source/edited/svd.tex">LaTeX source ↗</a></div></div><div class="footer-bottom">© Harsha Vardhan Tetali · These notes are informal educational material; corrections are welcome.</div></footer>
+<div class="search-modal" id="search-modal" hidden><div class="search-backdrop" data-close-search></div><section class="search-dialog" role="dialog" aria-modal="true" aria-label="Search the notes"><div class="search-field"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6"/></svg><input id="search-input" type="search" placeholder="Search for rank, null space, eigenvectors…" aria-label="Search query" autocomplete="off"/><button type="button" data-close-search aria-label="Close search">Esc</button></div><div class="search-results" id="search-results"><p>Search across all chapters and section titles.</p></div></section></div>
+</body></html>

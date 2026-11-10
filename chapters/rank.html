@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#f6f4ef"/>
+<title>Rank of a Matrix | Linear Algebra Notes · Harsha Vardhan Tetali</title>
+<meta name="description" content="Linear independence, rank inequalities, and row–column rank equality"/>
+<meta property="og:title" content="Rank of a Matrix | Informal Linear Algebra Notes"/>
+<meta property="og:description" content="Linear independence, rank inequalities, and row–column rank equality"/>
+<meta property="og:type" content="website"/>
+<link rel="canonical" href="https://mathyharsha.github.io/linear-algebra/chapters/rank.html"/>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet"/>
+<script>try{if(localStorage.getItem('matrix-notes-theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>
+<link rel="stylesheet" href="../assets/styles.css"/>
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},startup:{typeset:true}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script defer src="../assets/search-index.js"></script>
+<script defer src="../assets/app.js"></script>
+</head><body data-chapter="rank">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header"><div class="site-nav"><a class="site-brand" href="../index.html"><span class="brand-mark">H<span>·</span></span><span class="brand-name">Harsha's <em>notes</em></span></a>
+<nav class="desktop-nav" aria-label="Chapters"><a href="../index.html#chapters" class="nav-link">Chapters</a><a class="nav-link " href="../chapters/spaces.html">01 · Spaces of a Matrix</a><a class="nav-link is-current" href="../chapters/rank.html">02 · Rank of a Matrix</a><a class="nav-link " href="../chapters/svd.html">03 · Singular Value Decomposition</a></nav>
+<div class="nav-actions"><button class="icon-button" type="button" id="search-button" aria-label="Search notes" title="Search notes (/)" data-icon="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.6"/><path d="M16 16l5 5"/></svg><span class="search-hint">Search</span><kbd>/</kbd></button>
+<button class="icon-button theme-toggle" type="button" id="theme-button" aria-label="Toggle light or dark theme" title="Toggle theme"><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.4A8.5 8.5 0 0 1 9.6 3.5a8.5 8.5 0 1 0 10.9 10.9Z"/></svg></button>
+<button class="icon-button mobile-menu-button" type="button" id="menu-button" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div></div>
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile chapters"><a class="nav-link " href="../chapters/spaces.html">01 · Spaces of a Matrix</a><a class="nav-link is-current" href="../chapters/rank.html">02 · Rank of a Matrix</a><a class="nav-link " href="../chapters/svd.html">03 · Singular Value Decomposition</a><a href="../index.html">All chapters</a></nav>
+</header>
+<div class="reading-progress" id="reading-progress"></div>
+<div class="page-wrap"><div class="breadcrumb"><a href="../index.html">Notes</a><span>/</span><a href="../index.html#chapters">Linear algebra</a><span>/</span><strong>Rank of a Matrix</strong></div>
+<section class="chapter-header">
+<span class="eyebrow">02 · Dimension <span class="eyebrow-dot">·</span> Informal linear algebra notes</span>
+<h1>Rank of a Matrix</h1><p class="chapter-lead">Linear independence, rank inequalities, and row–column rank equality</p>
+<div class="chapter-meta"><span><span class="meta-swatch"></span> Written by Harsha Vardhan Tetali</span><span>25 numbered equations</span><a href="../source/edited/rank.tex" download>View LaTeX source ↗</a></div>
+</section>
+<div class="chapter-layout"><aside class="chapter-sidebar" id="chapter-sidebar"><div class="sidebar-top"><span>ON THIS PAGE</span><button type="button" id="toc-collapse" aria-expanded="true">Sections <span>⌄</span></button></div><nav class="toc-list" aria-label="Table of contents"><a class="toc-link " href="#introduction">Introduction</a>
+<a class="toc-link toc-sub" href="#row-rank">Row Rank</a>
+<a class="toc-link toc-sub" href="#column-rank">Column Rank</a>
+<a class="toc-link " href="#deficient-row-rank-matrices">Deficient Row Rank Matrices</a></nav><div class="sidebar-return"><a href="../index.html#chapters">← All chapters</a></div></aside>
+<main id="main-content" class="article"><div class="chapter-intro-callout"><span class="note-icon">✦</span><p><strong>The idea.</strong> Understand why the number of independent rows and columns must agree.</p></div><div class="article-body"><h2 id="introduction">Introduction<a aria-label="Link to this section" class="heading-anchor" href="#introduction">#</a></h2>
+<p>Let <span class="math inline">\(A\)</span> be a matrix with <span class="math inline">\(m\)</span> rows and <span class="math inline">\(n\)</span> columns and real entries (<span class="math inline">\(A \in \mathbb{R}^{m \times n}\)</span>). We define two quantities called the <strong>row rank</strong> and <strong>column rank</strong> of the matrix.</p>
+<h3 class="unnumbered" id="row-rank">Row Rank<a aria-label="Link to this section" class="heading-anchor" href="#row-rank">#</a></h3>
+<p>If each row of the matrix <span class="math inline">\(A\)</span> is viewed as a vector in <span class="math inline">\(\mathbb{R}^n\)</span>, then the row rank of the matrix is the number of linearly independent rows in the matrix.</p>
+<p>Premultiplying a matrix by a row vector produces a linear combination of the rows of that matrix.</p>
+<p>For example, let <span class="math inline">\(A = \begin{bmatrix}
+\boldsymbol{r}_1^{\top} \\ \boldsymbol{r}_2^{\top} \\ \vdots \\ \boldsymbol{r}_m^{\top} 
+\end{bmatrix}\)</span> and <span class="math inline">\(\boldsymbol{y}^{\top} = \begin{bmatrix}
+y_1 &amp; y_2 &amp; \cdots &amp; y_m
+\end{bmatrix}\)</span> where for <span class="math inline">\(i=1,2,\cdots,m\)</span> we have <span class="math inline">\(\boldsymbol{r}_i \in \mathbb{R}^{n}\)</span>.</p>
+<p>We know that <span class="equation-block" id="eq-rank-1"><span class="equation-math">\[\boldsymbol{y}^{\top} A = y_1\boldsymbol{r}_1^{\top} + y_2\boldsymbol{r}_2^{\top} + \cdots + y_m\boldsymbol{r}_m^{\top}\]</span><a aria-label="Equation 02.1; copy link" class="eq-number" href="#eq-rank-1" title="Link to equation 02.1">(02.1)</a></span></p>
+<p>Now let us take vectors <span class="math inline">\(\boldsymbol{y}_1, \boldsymbol{y}_2, \cdots, \boldsymbol{y}_k \in \mathbb{R}^{m}\)</span>. We use the following notation for each vector:</p>
+<p><span class="equation-block" id="eq-rank-2"><span class="equation-math">\[\boldsymbol{y}_i^{\top} = \begin{bmatrix}
+y_{i1} &amp; y_{i2} &amp; \cdots &amp; y_{im}
+\end{bmatrix}\]</span><a aria-label="Equation 02.2; copy link" class="eq-number" href="#eq-rank-2" title="Link to equation 02.2">(02.2)</a></span> for <span class="math inline">\(i = 1,2,\cdots,k\)</span>.</p>
+<p>It is easy to see that each <span class="math inline">\(\boldsymbol{y}_i^{\top}A \in \mathbb{R}^{1 \times n}\)</span>. We can place all these row vectors as rows of a new matrix to create,</p>
+<p><span class="math inline">\(\begin{bmatrix}
+\boldsymbol{y}_1^{\top}A \\
+\boldsymbol{y}_2^{\top}A \\
+\vdots \\
+\boldsymbol{y}_k^{\top}A
+\end{bmatrix} = B\)</span> where <span class="math inline">\(B \in \mathbb{R}^{k \times n}\)</span>.</p>
+<p>This entire process described above can be denoted in a simpler way:</p>
+<p><span class="equation-block" id="eq-rank-3"><span class="equation-math">\[\begin{bmatrix}
+\boldsymbol{y}_1^{\top} \\
+\boldsymbol{y}_2^{\top} \\
+\vdots \\
+\boldsymbol{y}_k^{\top}
+\end{bmatrix}A = B\]</span><a aria-label="Equation 02.3; copy link" class="eq-number" href="#eq-rank-3" title="Link to equation 02.3">(02.3)</a></span></p>
+<p>More explicitly, we can write</p>
+<p><span class="equation-block" id="eq-rank-4"><span class="equation-math">\[\begin{bmatrix}
+y_{11} &amp; y_{12} &amp; \cdots &amp; y_{1m} \\
+y_{21} &amp; y_{22} &amp; \cdots &amp; y_{2m} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+y_{k1} &amp; y_{k2} &amp; \cdots &amp; y_{km}
+\end{bmatrix}A = B\]</span><a aria-label="Equation 02.4; copy link" class="eq-number" href="#eq-rank-4" title="Link to equation 02.4">(02.4)</a></span></p>
+<p>Denoting the first matrix on the left-hand side by <span class="math inline">\(Y \in \mathbb{R}^{k \times m}\)</span>, we can write.</p>
+<p><span class="equation-block" id="eq-rank-5"><span class="equation-math">\[YA = B\]</span><a aria-label="Equation 02.5; copy link" class="eq-number" href="#eq-rank-5" title="Link to equation 02.5">(02.5)</a></span></p>
+<p>In the above process, we observe:</p>
+<ol>
+<li><p>A definition for the pre-multiplication of a matrix <span class="math inline">\(Y\)</span> with matrix <span class="math inline">\(A\)</span>.</p></li>
+<li><p>Each row of matrix <span class="math inline">\(B (=YA)\)</span> is a linear combination of rows of matrix A.</p></li>
+</ol>
+<p>From the second point above we can say that the row rank of matrix <span class="math inline">\(B\)</span> is at most the row rank of matrix <span class="math inline">\(A\)</span>.</p>
+<p>Therefore, to summarize:</p>
+<p><span class="math inline">\(\text{row-rank}(B) \leq \text{row-rank}(A)\)</span></p>
+<p>or, <span class="equation-block" id="eq-rank-6"><span class="equation-math">\[\text{row-rank}(YA) \leq \text{row-rank}(A)\]</span><a aria-label="Equation 02.6; copy link" class="eq-number" href="#eq-rank-6" title="Link to equation 02.6">(02.6)</a></span></p>
+<p>Thus, premultiplication can reduce the row rank of a matrix or leave it unchanged.</p>
+<h3 class="unnumbered" id="column-rank">Column Rank<a aria-label="Link to this section" class="heading-anchor" href="#column-rank">#</a></h3>
+<p>If each column of the matrix <span class="math inline">\(A\)</span> is viewed as a vector in <span class="math inline">\(\mathbb{R}^m\)</span>, then the column rank of the matrix is the number of linearly independent columns in the matrix.</p>
+<p>Assuming the same setup of matrix <span class="math inline">\(A\)</span> we now denote it with its columns: <span class="math inline">\(A = \begin{bmatrix}
+\boldsymbol{c}_1 &amp; \boldsymbol{c}_2 &amp; \cdots &amp; \boldsymbol{c}_n 
+\end{bmatrix}\)</span>.</p>
+<p>We follow a similar exercise as in the previous subsection.</p>
+<p>In this setup, now define a vector <span class="math inline">\(\boldsymbol{x}= \begin{bmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_n
+\end{bmatrix}\)</span></p>
+<p>Post-multiplying <span class="math inline">\(A\)</span> with <span class="math inline">\(\boldsymbol{x}\)</span>, we get a linear combination of the columns of the matrix <span class="math inline">\(A\)</span>.</p>
+<p><span class="equation-block" id="eq-rank-7"><span class="equation-math">\[A \boldsymbol{x} = x_1\boldsymbol{c}_1 + x_2\boldsymbol{c}_2 + \cdots + x_n\boldsymbol{c}_n\]</span><a aria-label="Equation 02.7; copy link" class="eq-number" href="#eq-rank-7" title="Link to equation 02.7">(02.7)</a></span></p>
+<p>Now we assume <span class="math inline">\(k\)</span> vectors <span class="math inline">\(\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_k \in \mathbb{R}^n\)</span> each represented as:</p>
+<p><span class="equation-block" id="eq-rank-8"><span class="equation-math">\[\boldsymbol{x}_i = \begin{bmatrix}
+x_{1i}\\
+x_{2i}\\
+\vdots \\
+x_{ni}
+\end{bmatrix}\]</span><a aria-label="Equation 02.8; copy link" class="eq-number" href="#eq-rank-8" title="Link to equation 02.8">(02.8)</a></span></p>
+<p>Now we observe that each <span class="math inline">\(A\boldsymbol{x}_i \in \mathbb{R}^{m}\)</span> for all <span class="math inline">\(i=1,2,\cdots,k\)</span>.</p>
+<p>Placing these vectors in the columns of a new matrix gives</p>
+<p><span class="equation-block" id="eq-rank-9"><span class="equation-math">\[\begin{bmatrix}
+A\boldsymbol{x}_1 &amp; A\boldsymbol{x}_2 &amp; \cdots &amp; A\boldsymbol{x}_k 
+\end{bmatrix} = C\]</span><a aria-label="Equation 02.9; copy link" class="eq-number" href="#eq-rank-9" title="Link to equation 02.9">(02.9)</a></span></p>
+<p>where <span class="math inline">\(C \in \mathbb{R}^{m \times k}\)</span>. Equivalently, we write</p>
+<p><span class="equation-block" id="eq-rank-10"><span class="equation-math">\[A\begin{bmatrix}
+\boldsymbol{x}_1 &amp; \boldsymbol{x}_2 &amp; \cdots &amp; \boldsymbol{x}_k 
+\end{bmatrix} = C\]</span><a aria-label="Equation 02.10; copy link" class="eq-number" href="#eq-rank-10" title="Link to equation 02.10">(02.10)</a></span></p>
+<p>More explicitly, we have</p>
+<p><span class="equation-block" id="eq-rank-11"><span class="equation-math">\[A\begin{bmatrix}
+x_{11} &amp; x_{12} &amp; \cdots &amp; x_{1k} \\
+x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2k} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nk}
+\end{bmatrix} = C\]</span><a aria-label="Equation 02.11; copy link" class="eq-number" href="#eq-rank-11" title="Link to equation 02.11">(02.11)</a></span></p>
+<p>Naming the second matrix in the left hand side above, as <span class="math inline">\(X \in \mathbb{R}^{n\times k}\)</span>, we can write:</p>
+<p><span class="equation-block" id="eq-rank-12"><span class="equation-math">\[AX = C\]</span><a aria-label="Equation 02.12; copy link" class="eq-number" href="#eq-rank-12" title="Link to equation 02.12">(02.12)</a></span></p>
+<p>In the above process we again examine two things:</p>
+<ol>
+<li><p>A definition for the post-multiplication of a matrix <span class="math inline">\(X\)</span> with matrix <span class="math inline">\(A\)</span>.</p></li>
+<li><p>Each column of matrix <span class="math inline">\(C(=AX)\)</span> is a linear combination of columns of <span class="math inline">\(A\)</span>.</p></li>
+</ol>
+<p>Again, from the second point above, we can say that the column rank of matrix <span class="math inline">\(C\)</span> is at most the column rank of <span class="math inline">\(A\)</span>.</p>
+<p>Therefore, to summarize:</p>
+<p><span class="math inline">\(\text{column-rank}(C) \leq \text{column-rank}(A)\)</span></p>
+<p>or, <span class="equation-block" id="eq-rank-13"><span class="equation-math">\[\text{column-rank}(AX) \leq \text{column-rank}(A)\]</span><a aria-label="Equation 02.13; copy link" class="eq-number" href="#eq-rank-13" title="Link to equation 02.13">(02.13)</a></span></p>
+<h2 id="deficient-row-rank-matrices">Deficient Row Rank Matrices<a aria-label="Link to this section" class="heading-anchor" href="#deficient-row-rank-matrices">#</a></h2>
+<p>A matrix has deficient row rank if its row rank is smaller than its number of rows. In such a case it is clear that the rows form a linearly dependent set. Considering the matrix <span class="math inline">\(A \in \mathbb{R}^{m \times n}\)</span>, if the row-rank(<span class="math inline">\(A\)</span>) = r, say, is less than m (number of rows in <span class="math inline">\(A\)</span>), i.e. <span class="math inline">\(r &lt; m\)</span>, then, it implies that <span class="math inline">\(m-r\)</span> of the rows can be represented as the linear combination of the <span class="math inline">\(r\)</span> linearly independent rows of <span class="math inline">\(A\)</span>.</p>
+<p>Let us follow the row convention as described in the subsection on row rank.</p>
+<p><span class="equation-block" id="eq-rank-14"><span class="equation-math">\[A = \begin{bmatrix}
+\boldsymbol{r}_1^{\top} \\ \boldsymbol{r}_2^{\top} \\ \vdots \\ 
+\boldsymbol{r}_{r}^{\top} \\
+\boldsymbol{r}_{r+1}^{\top} \\ \vdots \\ 
+\boldsymbol{r}_m^{\top} 
+\end{bmatrix}\]</span><a aria-label="Equation 02.14; copy link" class="eq-number" href="#eq-rank-14" title="Link to equation 02.14">(02.14)</a></span></p>
+<p>Without loss of generality, let the first <span class="math inline">\(r\)</span> rows be linearly independent, i.e. <span class="math inline">\(\{\boldsymbol{r}_{1}^{\top}, \boldsymbol{r}_{2}^{\top}, \cdots, \boldsymbol{r}_{r}^{\top}\}\)</span> forms a linearly independent set.</p>
+<p>Therefore the vectors <span class="math inline">\(\boldsymbol{r}_{r+1}^{\top}, \boldsymbol{r}_{r+2}^{\top}, \cdots, \boldsymbol{r}_{m}^{\top}\)</span> can be written as a linear combination of vectors from the above set.</p>
+<p>Let, <span class="equation-block" id="eq-rank-15"><span class="equation-math">\[\boldsymbol{r}_{i}^{\top} = a_{i,1}\boldsymbol{r}_{1}^{\top} + a_{i,2}\boldsymbol{r}_{2}^{\top} + \cdots + a_{i,r}\boldsymbol{r}_{r}^{\top}\]</span><a aria-label="Equation 02.15; copy link" class="eq-number" href="#eq-rank-15" title="Link to equation 02.15">(02.15)</a></span></p>
+<p>for <span class="math inline">\(i = r+1, r+2, \cdots m\)</span>.</p>
+<p>Thus, we can write <span class="math inline">\(A\)</span> as</p>
+<p><span class="equation-block" id="eq-rank-16"><span class="equation-math">\[A = \begin{bmatrix}
+1.\boldsymbol{r}_1^{\top}+ 0.\boldsymbol{r}_2^{\top} + \cdots + 0.\boldsymbol{r}_r^{\top}   \\ 0.\boldsymbol{r}_1^{\top}+ 1.\boldsymbol{r}_2^{\top} + \cdots + 0.\boldsymbol{r}_r^{\top}  \\ \vdots \\ 
+0.\boldsymbol{r}_1^{\top}+ 0.\boldsymbol{r}_2^{\top} + \cdots + 1.\boldsymbol{r}_r^{\top} \\
+a_{r+1,1}\boldsymbol{r}_{1}^{\top} + a_{r+1,2}\boldsymbol{r}_{2}^{\top} + \cdots + a_{r+1,r}\boldsymbol{r}_{r}^{\top}\\ 
+a_{r+2,1}\boldsymbol{r}_{1}^{\top} + a_{r+2,2}\boldsymbol{r}_{2}^{\top} + \cdots + a_{r+2,r}\boldsymbol{r}_{r}^{\top}\\ \vdots \\ 
+a_{m,1}\boldsymbol{r}_{1}^{\top} + a_{m,2}\boldsymbol{r}_{2}^{\top} + \cdots + a_{m,r}\boldsymbol{r}_{r}^{\top}
+\end{bmatrix}\]</span><a aria-label="Equation 02.16; copy link" class="eq-number" href="#eq-rank-16" title="Link to equation 02.16">(02.16)</a></span></p>
+<p>Using the intuition developed in the subsection on row rank, we can factorize this matrix as follows:</p>
+<p><span class="equation-block" id="eq-rank-17"><span class="equation-math">\[A = \begin{bmatrix}
+1 &amp; 0 &amp; \cdots &amp; 0   \\ 
+0 &amp; 1 &amp; \cdots &amp; 0   \\ 
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\ 
+0 &amp; 0 &amp; \cdots &amp; 1 \\
+a_{r+1,1} &amp; a_{r+1,2} &amp;\cdots &amp; a_{r+1,r}\\ 
+a_{r+2,1} &amp;  a_{r+2,2} &amp;\cdots &amp; a_{r+2,r}\\ 
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\ 
+a_{m,1}&amp; a_{m,2}&amp; \cdots &amp; a_{m,r}
+\end{bmatrix} \begin{bmatrix}
+\boldsymbol{r}_1^{\top} \\
+\boldsymbol{r}_2^{\top} \\
+\vdots \\
+\boldsymbol{r}_r^{\top}
+\end{bmatrix}\]</span><a aria-label="Equation 02.17; copy link" class="eq-number" href="#eq-rank-17" title="Link to equation 02.17">(02.17)</a></span></p>
+<p>Let <span class="equation-block" id="eq-rank-18"><span class="equation-math">\[S = \begin{bmatrix}
+1 &amp; 0 &amp; \cdots &amp; 0   \\ 
+0 &amp; 1 &amp; \cdots &amp; 0   \\ 
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\ 
+0 &amp; 0 &amp; \cdots &amp; 1 \\
+a_{r+1,1} &amp; a_{r+1,2} &amp;\cdots &amp; a_{r+1,r}\\ 
+a_{r+2,1} &amp;  a_{r+2,2} &amp;\cdots &amp; a_{r+2,r}\\ 
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\ 
+a_{m,1}&amp; a_{m,2}&amp; \cdots &amp; a_{m,r}
+\end{bmatrix}\]</span><a aria-label="Equation 02.18; copy link" class="eq-number" href="#eq-rank-18" title="Link to equation 02.18">(02.18)</a></span></p>
+<p>and <span class="equation-block" id="eq-rank-19"><span class="equation-math">\[R = \begin{bmatrix}
+\boldsymbol{r}_1^{\top} \\
+\boldsymbol{r}_2^{\top} \\
+\vdots \\
+\boldsymbol{r}_r^{\top}
+\end{bmatrix}\]</span><a aria-label="Equation 02.19; copy link" class="eq-number" href="#eq-rank-19" title="Link to equation 02.19">(02.19)</a></span></p>
+<p>Both <span class="math inline">\(S\)</span> and <span class="math inline">\(R\)</span> have rank <span class="math inline">\(r\)</span>: the columns of <span class="math inline">\(S\)</span> are linearly independent, and the rows of <span class="math inline">\(R\)</span> are linearly independent.</p>
+<p>Now let us see an interesting result. From the property of post multiplication we have:</p>
+<p><span class="equation-block" id="eq-rank-20"><span class="equation-math">\[\text{column-rank}(A) = \text{column-rank}(SR) \leq \text{column-rank}(S)\]</span><a aria-label="Equation 02.20; copy link" class="eq-number" href="#eq-rank-20" title="Link to equation 02.20">(02.20)</a></span></p>
+<p>Observe that the columns of <span class="math inline">\(S\)</span> are independent and are <span class="math inline">\(r\)</span> in number.</p>
+<p>Therefore, <span class="equation-block" id="eq-rank-21"><span class="equation-math">\[\text{column-rank}(S) = r = \text{row-rank}(A)\]</span><a aria-label="Equation 02.21; copy link" class="eq-number" href="#eq-rank-21" title="Link to equation 02.21">(02.21)</a></span></p>
+<p>Therefore, we finally have,</p>
+<p><span class="equation-block" id="eq-rank-22"><span class="equation-math">\[\text{column-rank}(A) \leq \text{row-rank}(A)
+\]</span><a aria-label="Equation 02.22; copy link" class="eq-number" href="#eq-rank-22" title="Link to equation 02.22">(02.22)</a></span></p>
+<p>This result is true for all matrices, therefore for a matrix <span class="math inline">\(A^{\top}\)</span>, we have,</p>
+<p><span class="equation-block" id="eq-rank-23"><span class="equation-math">\[\text{column-rank}(A^{\top}) \leq \text{row-rank}(A^{\top})\]</span><a aria-label="Equation 02.23; copy link" class="eq-number" href="#eq-rank-23" title="Link to equation 02.23">(02.23)</a></span></p>
+<p>It is now simple to see that,</p>
+<p><span class="equation-block" id="eq-rank-24"><span class="equation-math">\[\text{row-rank}(A) \leq \text{column-rank}(A)
+\]</span><a aria-label="Equation 02.24; copy link" class="eq-number" href="#eq-rank-24" title="Link to equation 02.24">(02.24)</a></span></p>
+<p>Thus, from <a class="eq-ref" data-reference="eq:fir" data-reference-type="ref" href="#eq-rank-22">02.22</a> and <a class="eq-ref" data-reference="eq:sec" data-reference-type="ref" href="#eq-rank-24">02.24</a> we have,</p>
+<p><span class="equation-block" id="eq-rank-25"><span class="equation-math">\[\text{row-rank}(A) = \text{column-rank}(A)\]</span><a aria-label="Equation 02.25; copy link" class="eq-number" href="#eq-rank-25" title="Link to equation 02.25">(02.25)</a></span></p>
+<p>The equality also holds for matrices of full row rank; when <span class="math inline">\(r=m\)</span>, there are no dependent rows to express.</p>
+<p>Thus, we conclude that the two notions <strong>row rank</strong> and <strong>column rank</strong> of a matrix are the same number. We define the rank of a matrix to be this common value.</p>
+</div>
+<div class="chapter-ending"><span>CHAPTER 02 OF 03</span><p>Continue reading</p><div class="chapter-pager"><a class="chapter-step previous" href="spaces.html"><span>← Previous chapter</span><strong>Spaces of a Matrix</strong></a><a class="chapter-step next" href="svd.html"><span>Next chapter →</span><strong>Singular Value Decomposition</strong></a></div></div>
+</main></div></div>
+<footer class="site-footer"><div class="footer-inner"><div><span class="footer-logo">H<span>·</span></span><strong>Informal Linear Algebra Notes</strong><p>Working through matrix theory, one idea at a time.</p></div><div class="footer-links"><a href="../index.html">Overview</a><a href="https://mathyharsha.github.io/" target="_blank" rel="noopener">Academic website ↗</a><a href="../source/edited/rank.tex">LaTeX source ↗</a></div></div><div class="footer-bottom">© Harsha Vardhan Tetali · These notes are informal educational material; corrections are welcome.</div></footer>
+<div class="search-modal" id="search-modal" hidden><div class="search-backdrop" data-close-search></div><section class="search-dialog" role="dialog" aria-modal="true" aria-label="Search the notes"><div class="search-field"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6"/></svg><input id="search-input" type="search" placeholder="Search for rank, null space, eigenvectors…" aria-label="Search query" autocomplete="off"/><button type="button" data-close-search aria-label="Close search">Esc</button></div><div class="search-results" id="search-results"><p>Search across all chapters and section titles.</p></div></section></div>
+</body></html>

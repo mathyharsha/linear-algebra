@@ -1,0 +1,217 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ mathrsfs }
+\usepackage{amsfonts}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\title{Informal Notes on Row, Column and Null Spaces of a Matrix}
+\author{Harsha Vardhan Tetali}
+\begin{document}
+\maketitle
+\author
+
+\section{Introduction}
+In this article the Row, Column and Null Spaces of a Matrix are defined in an informal and intuitive way. Further an equality relating the rank of a matrix and its nullity is explained so that the reader is well acquainted with these fundamental spaces of a matrix.
+
+\section{The Fundamental Subspaces of a Matrix}
+Consider the matrix $A \in \mathbb{R}^{m \times n}$. Let us define certain conventions, to follow in this article, about $A$ and $A^{\top}$. 
+
+We notate matrix $A$ with its columns as: 
+
+\begin{equation}
+A = \begin{bmatrix}
+\boldsymbol{c}_1 & \boldsymbol{c}_2 & \cdots & \boldsymbol{c}_n 
+\end{bmatrix}
+\end{equation}
+
+where $\boldsymbol{c}_i \in \mathbb{R}^{m}$ for each $i = 1,2,\cdots,n$.\\
+
+When we want to work with the rows of the matrix $A$, we can always work with the columns of $A^{\top}$ and therefore we notate:
+
+\begin{equation}
+A^{\top} = \begin{bmatrix}
+\boldsymbol{r}_1 & \boldsymbol{r}_2 & \cdots & \boldsymbol{r}_m 
+\end{bmatrix}
+\end{equation}
+
+
+where $\boldsymbol{r}_i \in \mathbb{R}^{n}$ for each $i = 1,2,\cdots,m$.\\
+
+We can always see the matrix $A$ as an operator which transforms vectors in $\mathbb{R}^{n}$ space to vectors in $\mathbb{R}^{m}$ space, as for any $\boldsymbol{x} = \left(x_1, x_2, \cdots x_n \right)$ we have,
+
+\begin{equation}
+A\boldsymbol{x} = \boldsymbol{c}_1 x_1 + \boldsymbol{c}_2 x_2 + \cdots + \boldsymbol{c}_n x_n
+\end{equation}
+
+Therefore, for any $\boldsymbol{x} \in \mathbb{R}^n$, we find $A\boldsymbol{x} \in \mathbb{R}^m$.\\
+
+Similarly, for any $\boldsymbol{y} \in \mathbb{R}^{m}$ such that, $\boldsymbol{y} = \left( y_1, y_2, \cdots, y_m \right)$, we have,
+
+\begin{equation}
+A^{\top}\boldsymbol{y} = \boldsymbol{r}_1 y_1 + \boldsymbol{r}_2 y_2 + \cdots + \boldsymbol{r}_m y_m
+\end{equation}
+
+Therefore, for any $\boldsymbol{y} \in \mathbb{R}^m$, we find $A^{\top}\boldsymbol{y} \in \mathbb{R}^n$.\\
+
+Let us plug in all possible $\boldsymbol{y} \in \mathbb{R}^m$ and put them in a set, let us call this set $R(A)$ for reasons that will be clear as we proceed. Thus,
+
+\begin{equation}
+R(A) = \{ u : u = A^{\top}y, \forall y \in \mathbb{R}^m  \}
+\end{equation}
+
+It is clear that the set $R(A) \subseteq \mathbb{R}^n$ is a vector space. Since this space is obtained by the linear combinations of rows of matrix $A$, we call this the \textbf{Row Space} of $A$.\\
+
+Now let us try to create a set of vectors orthogonal to the $R(A)$. We can write such a set as,
+$\{ x: \boldsymbol{a}^{\top}\boldsymbol{x} = 0, \forall \boldsymbol{a} \in R(A) \}$. If this is seeming incomprehensible, it is easy to define the above set as the set of all vectors that are orthogonal to all linear combinations formed by the rows of matrix $A$.
+
+Therefore, for any member $\boldsymbol{u}$ in the set described above we need to ensure,
+
+\begin{equation}
+\boldsymbol{u}^{\top}\left( \alpha_1 \boldsymbol{r}_1 + \alpha_2 \boldsymbol{r}_2 + \cdots + \alpha_m \boldsymbol{r}_m \right) = 0
+\end{equation}
+
+for all $\left( \alpha_1, \alpha_2, \cdots, \alpha_m \right) \in \mathbb{R}^m$. With appropriate choice of $\alpha_i$ for $i=1,2,\cdots,m$ we can easily see the following should hold true:
+
+\begin{eqnarray}
+\boldsymbol{u}^{\top}\boldsymbol{r}_1 = 0 \\
+\boldsymbol{u}^{\top}\boldsymbol{r}_2 = 0 \\
+\vdots\\
+\boldsymbol{u}^{\top}\boldsymbol{r}_m = 0
+\end{eqnarray}
+
+Combining these into a matrix form, we get,
+
+\begin{equation}
+\begin{bmatrix}
+\boldsymbol{r}_1^{\top}\\
+\boldsymbol{r}_2^{\top}\\
+\vdots\\
+\boldsymbol{r}_m^{\top}
+\end{bmatrix} \boldsymbol{u} = \begin{bmatrix}
+0\\
+0\\
+\vdots\\
+0
+\end{bmatrix}
+\end{equation}
+
+Observe that the above can be easily written as follows:
+
+\begin{equation}
+A\boldsymbol{u} = \boldsymbol{0}
+\end{equation}
+
+Therefore the set of vectors orthogonal to $R(A)$, which we denote $N(A)$ for reasons which will be clear, can succinctly be defined as follows:
+
+\begin{equation}
+N(A) = \{\boldsymbol{x} \in \mathbb{R}^n: A\boldsymbol{x}=\boldsymbol{0}\}
+\end{equation}
+
+Observe that the above set is a vector space. We name it the \textbf{Null Space} of $A$. And we also have that the \textbf{Null Space} of $A$ is orthogonal to the \textbf{Row Space} of $A$. 
+
+On similar lines we can define the \textbf{Column Space} of $A$, denoted as $C(A)$, as the set of all linear combinations of columns of $A$. It is easy to see that, $C(A) = R(A^{\top})$. Therefore we can also conclude that $C(A)$ is orthogonal to $N(A^{\top})$.
+
+\bigskip
+
+\section{Relating Rank and Nullity of a Matrix}
+
+
+Let the matrix $A \in \mathbb{R}^{m \times n}$ be of rank $r$, the dimension of $C(A)$ is therefore $r$, which means that we can have a basis set consisting of $r$ vectors for the $C(A)$. From the equality of column rank and row rank of a matrix, we can say that a basis set consisting of $r$ vectors can also be used to describe $R(A)$.
+
+Now let us assume that the dimension of null space of $A$, also referred to as the nullity of $A$, is $k$.
+
+Let us form a basis for this null space,
+
+\begin{equation}
+\mathit{\Gamma}_N = \{ \boldsymbol{g}_1, \boldsymbol{g}_2, \cdots, \boldsymbol{g}_k \} 
+\end{equation}
+
+Since the dimension of the domain space is $n$, we can add $l=n-k$ vectors to the above set so as to form a basis of $\mathbb{R}^{n}$.
+
+Let the complete basis set of $\mathbb{R}^n$ be,
+
+\begin{equation}
+\mathit{\Gamma} = \{ \boldsymbol{g}_1, \boldsymbol{g}_2, \cdots, \boldsymbol{g}_k, \boldsymbol{p}_1, \boldsymbol{p}_2, \cdots, \boldsymbol{p}_l \} 
+\end{equation}
+
+Any element $\boldsymbol{a} \in$ range-space of $A$, or equivalently $C(A)$, we have,
+
+\begin{equation}
+\boldsymbol{a} = A\boldsymbol{x}
+\end{equation}
+
+for some $\boldsymbol{x} \in \mathbb{R}^n$.
+
+We can write $\boldsymbol{x}$ as a linear combination of the elements in the basis set $\Gamma$ of $\mathbb{R}^n$.
+
+\begin{equation}
+\boldsymbol{x} = \alpha_1 \boldsymbol{g}_1 + \alpha_2 \boldsymbol{g}_2+ \cdots + \alpha_k \boldsymbol{g}_k + \beta_1 \boldsymbol{p}_1 + \beta_2 \boldsymbol{p}_2 + \cdots \beta_l \boldsymbol{p}_l 
+\end{equation}
+
+Multiplying by $A$ on both sides, we can write,
+\begin{equation}
+\boldsymbol{a} = A\boldsymbol{x} = \beta_1 A\boldsymbol{p}_1 + \beta_2 A\boldsymbol{p}_2 + \cdots \beta_l A\boldsymbol{p}_l 
+\end{equation}
+
+(since, $\boldsymbol{g}_i$ are basis of null space of $A$, we have, $A\boldsymbol{g}_i = \boldsymbol{0}$ for all possible values of $i$.)
+
+Thus, we can see that any vector in $C(A)$ can be represented as a linear combination of the elements in the set $\{A\boldsymbol{p}_1, A\boldsymbol{p}_2, \cdots, A\boldsymbol{p}_l \}$. From here we say that the the \textbf{Linear Span} of the above set is $C(A)$.
+
+Let us try to see if we can prove that the above set is linearly independent. Towards this objective, let us try to look at a linear combination of the elements of the above set so that it equals the zero vector.
+
+\begin{equation}
+\delta_1 A\boldsymbol{p}_1 + \delta_2 A\boldsymbol{p}_2 + \cdots + \delta_l A\boldsymbol{p}_l = \boldsymbol{0}
+\end{equation}
+
+From linearity property of $A$ we have,
+
+\begin{equation}
+A\left[\delta_1 \boldsymbol{p}_1 + \delta_2 \boldsymbol{p}_2 + \cdots + \delta_l \boldsymbol{p}_l \right]= \boldsymbol{0}
+\end{equation}
+
+The above implies that $\delta_1 \boldsymbol{p}_1 + \delta_2 \boldsymbol{p}_2 + \cdots + \delta_l \boldsymbol{p}_l$ is in the null space of $A$.
+
+Therefore, we have,
+
+\begin{equation}
+\delta_1 \boldsymbol{p}_1 + \delta_2 \boldsymbol{p}_2 + \cdots + \delta_l \boldsymbol{p}_l = \gamma_1 \boldsymbol{g}_1 + \gamma_2 \boldsymbol{g}_2 + \cdots + \gamma_k \boldsymbol{g}_k
+\end{equation}
+
+\begin{equation}
+\delta_1 \boldsymbol{p}_1 + \delta_2 \boldsymbol{p}_2 + \cdots + \delta_l \boldsymbol{p}_l - \gamma_1 \boldsymbol{g}_1 - \gamma_2 \boldsymbol{g}_2 - \cdots - \gamma_k \boldsymbol{g}_k = \boldsymbol{0}
+\end{equation}
+
+Since, $\Gamma$ is a basis, it is a linearly independent set.
+
+Thus, each $\delta_i = 0$ for each $i=1,2, \cdots,l$ and $\gamma_j = 0$ for each $j = 1,2, \cdots, k$. 
+
+Thus the set $\{ A\boldsymbol{p}_1, A\boldsymbol{p}_2, \cdots, A\boldsymbol{p}_l \}$ is linearly independent.
+
+\bigskip
+
+Since the above set is linearly independent and is a linear span of $\mathbb{R}^n$, it is a basis for the space $C(A)$.
+
+Since rank of $A$ is $r$, we have, $l = r$.
+
+Thus, $ n = k + r$.
+
+Thus, $n = dim(N(A)) + dim(C(A))$.
+
+\bigskip
+
+\textbf{Remark}:
+In the above the Column space can be replaced by Row space as the rank is the same. Thus the row rank and the dimension of null space (nullity) are not independent and there is an easy relation between the two.
+
+
+\end{document}

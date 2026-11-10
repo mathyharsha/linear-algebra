@@ -1,0 +1,327 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ mathrsfs }
+\usepackage{amsfonts}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\title{Informal Notes on Rank of a Matrix}
+\author{Harsha Vardhan Tetali}
+\begin{document}
+\maketitle
+\author
+
+\section{Introduction}
+
+Let $A$ be a matrix with $m$ rows and $n$ columns and real entries ($A \in \mathbb{R}^{m \times n}$). We define two quantities called the \textbf{row rank} and \textbf{column rank} of the matrix. 
+
+\subsection*{Row Rank}
+
+If each row of the matrix $A$ is viewed as a vector in $\mathbb{R}^n$, then the row rank of the matrix is the number of linearly independent rows in the matrix.
+
+Premultiplying a matrix by a row vector produces a linear combination of the rows of that matrix.
+
+For example, let $A = \begin{bmatrix}
+\boldsymbol{r}_1^{\top} \\ \boldsymbol{r}_2^{\top} \\ \vdots \\ \boldsymbol{r}_m^{\top} 
+\end{bmatrix}$ and $\boldsymbol{y}^{\top} = \begin{bmatrix}
+y_1 & y_2 & \cdots & y_m
+\end{bmatrix}$ where for $i=1,2,\cdots,m$ we have $\boldsymbol{r}_i \in \mathbb{R}^{n}$.
+
+We know that \begin{equation}
+\boldsymbol{y}^{\top} A = y_1\boldsymbol{r}_1^{\top} + y_2\boldsymbol{r}_2^{\top} + \cdots + y_m\boldsymbol{r}_m^{\top} 
+\end{equation}
+
+Now let us take vectors $\boldsymbol{y}_1, \boldsymbol{y}_2, \cdots, \boldsymbol{y}_k \in \mathbb{R}^{m}$. We use the following notation for each vector:
+
+\begin{equation}
+\boldsymbol{y}_i^{\top} = \begin{bmatrix}
+y_{i1} & y_{i2} & \cdots & y_{im}
+\end{bmatrix}
+\end{equation}
+for $i = 1,2,\cdots,k$.
+
+It is easy to see that each $\boldsymbol{y}_i^{\top}A \in \mathbb{R}^{1 \times n}$. We can place all these row vectors as rows of a new matrix to create,
+
+$\begin{bmatrix}
+\boldsymbol{y}_1^{\top}A \\
+\boldsymbol{y}_2^{\top}A \\
+\vdots \\
+\boldsymbol{y}_k^{\top}A
+\end{bmatrix} = B$ where $B \in \mathbb{R}^{k \times n}$.
+
+This entire process described above can be denoted in a simpler way:
+
+\begin{equation}
+\begin{bmatrix}
+\boldsymbol{y}_1^{\top} \\
+\boldsymbol{y}_2^{\top} \\
+\vdots \\
+\boldsymbol{y}_k^{\top}
+\end{bmatrix}A = B
+\end{equation}
+
+More explicitly, we can write
+
+\begin{equation}
+\begin{bmatrix}
+y_{11} & y_{12} & \cdots & y_{1m} \\
+y_{21} & y_{22} & \cdots & y_{2m} \\
+\vdots & \vdots & \ddots & \vdots \\
+y_{k1} & y_{k2} & \cdots & y_{km}
+\end{bmatrix}A = B
+\end{equation}
+
+
+Denoting the first matrix on the left-hand side by $Y \in \mathbb{R}^{k \times m}$, we can write.
+
+\begin{equation}
+YA = B
+\end{equation}
+
+In the above process, we observe:
+
+\begin{enumerate}
+\item A definition for the pre-multiplication of a matrix $Y$ with matrix $A$.
+\item Each row of matrix $B (=YA)$ is a linear combination of rows of matrix A.
+\end{enumerate}
+
+From the second point above we can say that the row rank of matrix $B$ is at most the row rank of matrix $A$.
+
+Therefore, to summarize:
+
+$\text{row-rank}(B) \leq \text{row-rank}(A)$
+
+or, \begin{equation}
+\text{row-rank}(YA) \leq \text{row-rank}(A)
+\end{equation}
+
+Thus, premultiplication can reduce the row rank of a matrix or leave it unchanged.
+
+\subsection*{Column Rank}
+
+If each column of the matrix $A$ is viewed as a vector in $\mathbb{R}^m$, then the column rank of the matrix is the number of linearly independent columns in the matrix.
+
+Assuming the same setup of matrix $A$ we now denote it with its columns: $A = \begin{bmatrix}
+\boldsymbol{c}_1 & \boldsymbol{c}_2 & \cdots & \boldsymbol{c}_n 
+\end{bmatrix}$.
+
+We follow a similar exercise as in the previous subsection.
+
+In this setup, now define a vector $\boldsymbol{x}= \begin{bmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_n
+\end{bmatrix}$
+
+Post-multiplying $A$ with $\boldsymbol{x}$, we get a linear combination of the columns of the matrix $A$.
+
+\begin{equation}
+A \boldsymbol{x} = x_1\boldsymbol{c}_1 + x_2\boldsymbol{c}_2 + \cdots + x_n\boldsymbol{c}_n 
+\end{equation}
+
+Now we assume $k$ vectors $\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_k \in \mathbb{R}^n$ each represented as:
+
+\begin{equation}
+\boldsymbol{x}_i = \begin{bmatrix}
+x_{1i}\\
+x_{2i}\\
+\vdots \\
+x_{ni}
+\end{bmatrix}
+\end{equation}
+
+Now we observe that each $A\boldsymbol{x}_i \in \mathbb{R}^{m}$ for all $i=1,2,\cdots,k$.
+
+Placing these vectors in the columns of a new matrix gives
+
+\begin{equation} 
+\begin{bmatrix}
+A\boldsymbol{x}_1 & A\boldsymbol{x}_2 & \cdots & A\boldsymbol{x}_k 
+\end{bmatrix} = C
+\end{equation}
+
+where $C \in \mathbb{R}^{m \times k}$. 
+Equivalently, we write
+
+\begin{equation} 
+A\begin{bmatrix}
+\boldsymbol{x}_1 & \boldsymbol{x}_2 & \cdots & \boldsymbol{x}_k 
+\end{bmatrix} = C
+\end{equation}
+
+More explicitly, we have
+
+\begin{equation}
+A\begin{bmatrix}
+x_{11} & x_{12} & \cdots & x_{1k} \\
+x_{21} & x_{22} & \cdots & x_{2k} \\
+\vdots & \vdots & \ddots & \vdots \\
+x_{n1} & x_{n2} & \cdots & x_{nk}
+\end{bmatrix} = C
+\end{equation}
+
+Naming the second matrix in the left hand side above, as $X \in \mathbb{R}^{n\times k}$, we can write:
+
+\begin{equation}
+AX = C
+\end{equation}
+
+In the above process we again examine two things:
+
+\begin{enumerate}
+\item A definition for the post-multiplication of a matrix $X$ with matrix $A$.
+\item Each column of matrix $C(=AX)$ is a linear combination of columns of $A$.
+\end{enumerate}
+Again, from the second point above, we can say that the column rank of matrix $C$ is at most the column rank of $A$.
+
+Therefore, to summarize:
+
+$\text{column-rank}(C) \leq \text{column-rank}(A)$
+
+or, \begin{equation}
+\text{column-rank}(AX) \leq \text{column-rank}(A)
+\end{equation}
+
+\section{Deficient Row Rank Matrices}
+
+A matrix has deficient row rank if its row rank is smaller than its number of rows. In such a case it is clear that the rows form a linearly dependent set. Considering the matrix $A \in \mathbb{R}^{m \times n}$, if the row-rank($A$) = r, say, is less than m (number of rows in $A$), i.e. $r < m$, then, it implies that $m-r$ of the rows can be represented as the linear combination of the $r$ linearly independent rows of $A$.
+
+Let us follow the row convention as described in the subsection on row rank.
+
+\begin{equation}
+A = \begin{bmatrix}
+\boldsymbol{r}_1^{\top} \\ \boldsymbol{r}_2^{\top} \\ \vdots \\ 
+\boldsymbol{r}_{r}^{\top} \\
+\boldsymbol{r}_{r+1}^{\top} \\ \vdots \\ 
+\boldsymbol{r}_m^{\top} 
+\end{bmatrix}
+\end{equation}
+
+Without loss of generality, let the first $r$ rows be linearly independent, i.e. $\{\boldsymbol{r}_{1}^{\top}, \boldsymbol{r}_{2}^{\top}, \cdots, \boldsymbol{r}_{r}^{\top}\}$ forms a linearly independent set.
+
+Therefore the vectors $\boldsymbol{r}_{r+1}^{\top}, \boldsymbol{r}_{r+2}^{\top}, \cdots, \boldsymbol{r}_{m}^{\top}$ can be written as a linear combination of vectors from the above set.
+
+Let,
+\begin{equation}
+\boldsymbol{r}_{i}^{\top} = a_{i,1}\boldsymbol{r}_{1}^{\top} + a_{i,2}\boldsymbol{r}_{2}^{\top} + \cdots + a_{i,r}\boldsymbol{r}_{r}^{\top}
+\end{equation}
+
+for $i = r+1, r+2, \cdots m$.
+
+Thus, we can write $A$ as
+
+\begin{equation}
+A = \begin{bmatrix}
+1.\boldsymbol{r}_1^{\top}+ 0.\boldsymbol{r}_2^{\top} + \cdots + 0.\boldsymbol{r}_r^{\top}   \\ 0.\boldsymbol{r}_1^{\top}+ 1.\boldsymbol{r}_2^{\top} + \cdots + 0.\boldsymbol{r}_r^{\top}  \\ \vdots \\ 
+0.\boldsymbol{r}_1^{\top}+ 0.\boldsymbol{r}_2^{\top} + \cdots + 1.\boldsymbol{r}_r^{\top} \\
+a_{r+1,1}\boldsymbol{r}_{1}^{\top} + a_{r+1,2}\boldsymbol{r}_{2}^{\top} + \cdots + a_{r+1,r}\boldsymbol{r}_{r}^{\top}\\ 
+a_{r+2,1}\boldsymbol{r}_{1}^{\top} + a_{r+2,2}\boldsymbol{r}_{2}^{\top} + \cdots + a_{r+2,r}\boldsymbol{r}_{r}^{\top}\\ \vdots \\ 
+a_{m,1}\boldsymbol{r}_{1}^{\top} + a_{m,2}\boldsymbol{r}_{2}^{\top} + \cdots + a_{m,r}\boldsymbol{r}_{r}^{\top}
+\end{bmatrix}
+\end{equation}
+
+Using the intuition developed in the subsection on row rank, we can factorize this matrix as follows:
+
+\begin{equation}
+A = \begin{bmatrix}
+1 & 0 & \cdots & 0   \\ 
+0 & 1 & \cdots & 0   \\ 
+\vdots & \vdots & \ddots & \vdots\\ 
+0 & 0 & \cdots & 1 \\
+a_{r+1,1} & a_{r+1,2} &\cdots & a_{r+1,r}\\ 
+a_{r+2,1} &  a_{r+2,2} &\cdots & a_{r+2,r}\\ 
+\vdots & \vdots & \ddots & \vdots\\ 
+a_{m,1}& a_{m,2}& \cdots & a_{m,r}
+\end{bmatrix} \begin{bmatrix}
+\boldsymbol{r}_1^{\top} \\
+\boldsymbol{r}_2^{\top} \\
+\vdots \\
+\boldsymbol{r}_r^{\top}
+\end{bmatrix}
+\end{equation}
+
+Let \begin{equation}
+S = \begin{bmatrix}
+1 & 0 & \cdots & 0   \\ 
+0 & 1 & \cdots & 0   \\ 
+\vdots & \vdots & \ddots & \vdots\\ 
+0 & 0 & \cdots & 1 \\
+a_{r+1,1} & a_{r+1,2} &\cdots & a_{r+1,r}\\ 
+a_{r+2,1} &  a_{r+2,2} &\cdots & a_{r+2,r}\\ 
+\vdots & \vdots & \ddots & \vdots\\ 
+a_{m,1}& a_{m,2}& \cdots & a_{m,r}
+\end{bmatrix}
+\end{equation}
+
+and 
+\begin{equation}
+R = \begin{bmatrix}
+\boldsymbol{r}_1^{\top} \\
+\boldsymbol{r}_2^{\top} \\
+\vdots \\
+\boldsymbol{r}_r^{\top}
+\end{bmatrix}
+\end{equation}
+
+Both $S$ and $R$ have rank $r$: the columns of $S$ are linearly independent, and the rows of $R$ are linearly independent.
+
+Now let us see an interesting result. From the property of post multiplication we have:
+
+\begin{equation}
+\text{column-rank}(A) = \text{column-rank}(SR) \leq \text{column-rank}(S)
+\end{equation}
+
+Observe that the columns of $S$ are independent and are $r$ in number. 
+
+Therefore,
+\begin{equation}
+\text{column-rank}(S) = r = \text{row-rank}(A)
+\end{equation}
+
+Therefore, we finally have,
+
+\begin{equation}
+\text{column-rank}(A) \leq \text{row-rank}(A)
+\label{eq:fir}
+\end{equation}
+
+This result is true for all matrices, therefore for a matrix $A^{\top}$, we have,
+
+\begin{equation}
+\text{column-rank}(A^{\top}) \leq \text{row-rank}(A^{\top})
+\end{equation}
+
+It is now simple to see that,
+
+\begin{equation}
+\text{row-rank}(A) \leq \text{column-rank}(A)
+\label{eq:sec}
+\end{equation}
+
+Thus, from \ref{eq:fir} and \ref{eq:sec} we have,
+
+\begin{equation}
+\text{row-rank}(A) = \text{column-rank}(A)
+\end{equation}
+
+The equality also holds for matrices of full row rank; when $r=m$, there are no dependent rows to express.
+
+Thus, we conclude that the two notions \textbf{row rank} and \textbf{column rank} of a matrix are the same number. We define the rank of a matrix to be this common value.
+
+
+
+
+\end{document}.
+
+
